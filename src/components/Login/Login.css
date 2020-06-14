@@ -1,0 +1,22 @@
+
+/*************Login.js***********/
+
+
+#login-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+  #auth-result-msg-id {
+    grid-column: 2/3;
+    grid-row: 3;
+
+    font-size: 18px;
+
+    color : red;
+    height: 20px;
+  }
+
+  
