@@ -68,7 +68,8 @@
 # 
 ##### npm install axios --sav
 #
-# Heroku deploy links:
+# Heroku deploy links 
+### (Please note that it takes a couple minutes to wake up processes on Heroku and complete initial rendering):
 ###### Frontend: https://task-at-ease-frontend.herokuapp.com   
 ###### DB Backend: https://task-at-ease-backend.herokuapp.com   
 ###### Img Server:https://task-at-ease-img-svr.herokuapp.com   
