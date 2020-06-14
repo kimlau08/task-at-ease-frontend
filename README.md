@@ -1,68 +1,74 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+# task-at-ease-frontend
+#
+# Description
+### Provide an online market place for house owners and workers to create and manage house tasks. A house owner can create tasks. Workers can use contact info to directly contact house owners. A worker can accept a task invite. A owner or worker can close the task upon completion.
+# 
+# Target users
+### House owners who are looking to hire workers to help with house chores. Workers who are looking to take on house tasks.
+# 
+# Screens
+### Home slider
+![wireframe](./wireframe/HomeSlider.PNG)
+### Home grid - Open task alert on left. Sample tasks on right
+![wireframe](./wireframe/HomeGrid.PNG)
+### Our workers - Introduction of workers and past tasks
+![wireframe](./wireframe/OurWorkers.PNG)
+### Login - login form for authentication using Postgres
+![wireframe](./wireframe/Login.PNG)
+### My tasks - Tasks opened, being worked on, completed by the logged in user
+![wireframe](./wireframe/MyTasks.PNG)
+### Task form - form to create new tasks or update an existing task
+![wireframe](./wireframe/TaskForm.PNG)
+# 
+# Components
+### Stateful components
+#### App.js - Nav bar. Carousel. Home grid
+#### OpenTaskAlert - Open task msg on left pane of Home grid.
+#### Login.js - Login and autheticate
+#### OurWorkers.js - List of workers and photo's of past task
+#### MyTasks.js - Task creation, read, update, delete.
+#### TaskForm.js - Form for task creation and update
+# 
+### Functional components
+#### Home.js - landing page with rendering shown App.js
+#### SlideShow.js - driver of slideshow in Home grid
+#### TaskCardList.js - display list of task summary cards for MyWorkers and task details cards for MyTasks
+#### UserCard.js - display user info in a card
+#### WorkerTaskCard.js - Display list of past tasks for each worker
+# 
+# API used: 
+### 1) Current location Geocodes lookup:
+##### https://api.ipify.org
+##### https://api.ipgeolocation.io/ipgeo
+### 2) Zip codes within distance of current location
+##### https://api.promaptools.com/service/us/zips-inside-radius/get
+# 
+# Baseline Technologies
+### Frontend: Reactjs, React Router, Axios/AJAX
+### Backend: 5 API models. Spring Boot w/ Maven as build tool, MVC architecture, Postgres SQL database
+#
+# Technologies used additionally
+### React Bootstrap, Bootstrap
+### Express.js server backend as image file server 
+### Authentication using Postgres
+### React-slideshow to graphically illustrate the business concept in home page
+### Axios for API calls
+# 
+# CRUD operations
+### Create, Read, Update, Delete on tasks table  
+### Read from users, workerskills, tasks, taskphoto, skills
+#
+# Installation
+#
+##### npm install react-slideshow-image --sav
+#
+##### npm install react-bootstrap bootstrap --sav
+#
+##### npm install react-router-dom --sav
+# 
+##### npm install axios --sav
+#
+# Heroku deploy links:
+###### Frontend: https://task-at-ease-frontend.herokuapp.com   
+###### DB Backend: https://task-at-ease-backend.herokuapp.com   
+###### Img Server:https://task-at-ease-img-svr.herokuapp.com   
