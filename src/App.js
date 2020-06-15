@@ -12,7 +12,7 @@ import OpenTaskAlerts from './components/OpenTaskAlerts/OpenTaskAlerts';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
-import Slideshow from './components/Slideshow/Slideshow';
+import SlideTop from './components/SlideTop';
 import TasksCardList from './components/TasksCardList';
 import SampleTasks from './components/SampleTasks';
 import JumbotronMsg from './components/JumbotronMsg';
@@ -251,10 +251,10 @@ export default class App extends Component {
       document.getElementById(toContainerId).style.display="";
     }
       
-    //Bootstrap display & slider needs explicity management
+    //Bootstrap display & slide needs explicity management
     if (toContainerId === "home-container") {
       document.getElementById("bootstrap-contents").style.display=""
-      document.getElementById("slide-box").style.display=""
+      document.getElementById("slide-container").style.display=""
     }
 
     //Look for the container element to be swapped from
@@ -267,10 +267,10 @@ export default class App extends Component {
             document.getElementById(fromContainerId).style.display="none";
         }
 
-      //Bootstrap display & slider needs explicity management
+      //Bootstrap display & slide needs explicity management
       if (fromContainerId === "home-container") {
         document.getElementById("bootstrap-contents").style.display="none"
-        document.getElementById("slide-box").style.display="none"
+        document.getElementById("slide-container").style.display="none"
       }
     }
   }
@@ -343,7 +343,7 @@ export default class App extends Component {
 
         {this.navBar()}
 
-        <Slideshow />
+        <SlideTop />
 
         <div id="bootstrap-contents">
             <br /><br />
