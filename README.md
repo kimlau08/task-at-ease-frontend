@@ -7,8 +7,8 @@
 ### House owners who are looking to hire workers to help with house chores. Workers who are looking to take on house tasks.
 # 
 # Screens
-### Home slider
-![wireframe](./wireframe/HomeSlider.PNG)
+### Home page
+![wireframe](./wireframe/HomeSlide.PNG)
 ### Home grid - Open task alert on left. Sample tasks on right
 ![wireframe](./wireframe/HomeGrid.PNG)
 ### Our workers - Introduction of workers and past tasks
@@ -31,7 +31,7 @@
 # 
 ### Functional components
 #### Home.js - landing page with rendering shown App.js
-#### SlideShow.js - driver of slideshow in Home grid
+#### SlideTop.js - graphic on top part of landing page to introduce the purpose of the web site
 #### TaskCardList.js - display list of task summary cards for MyWorkers and task details cards for MyTasks
 #### UserCard.js - display user info in a card
 #### WorkerTaskCard.js - Display list of past tasks for each worker
@@ -53,6 +53,7 @@
 ### Authentication using Postgres
 ### React-slideshow to graphically illustrate the business concept in home page
 ### Axios for API calls
+### Animation libraries in home page to grab attention
 # 
 # CRUD operations
 ### Create, Read, Update, Delete on tasks table  
@@ -61,6 +62,7 @@
 # Installation
 #
 ##### npm install react-slideshow-image --sav
+##### npm install --sav radium 
 #
 ##### npm install react-bootstrap bootstrap --sav
 #
