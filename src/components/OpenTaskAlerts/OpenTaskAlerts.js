@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-
-const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
 
 const notApplicable = "N/A"
 const displayOpenTaskCard = (task) => {
@@ -28,49 +25,27 @@ const displayOpenTaskCard = (task) => {
     )
 }
 
-
-export default class OpenTaskAlerts extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state= {
-
-            openTasks: []
-        }
-
-        this.getTaskByStatus = this.getTaskByStatus.bind(this);
-    }
-
-    async getTaskByStatus(status) {
+export default function OpenTaskAlerts(props) {     
     
-        try {
-          const response=await axios.get(`${dbDNS}/tae_api/v1/taskbystatus/${status}`);
-          console.log("getTaskByStatus response:", response.data);
-
-          this.setState( {openTasks : response.data} );
-        
-        } catch (e) {
-          console.error(e);
-        }
+    if (Object.keys(props).length === 0 && props.constructor === Object) {
+        return <div></div>  //props is empty
     }
+    if (props.openTasks.length === 0) {
+        return <div></div>  //empty array
+    }   
 
-    componentDidMount() {
-        this.getTaskByStatus("open")
-    }
-    
-    render () {
+    let openTasks = props.openTasks;
 
-        let toContainerId="open-tasks-container";
+    let toContainerId="open-tasks-container";
 
-        return (  
-            <div id={toContainerId}>
+    return (  
+        <div id={toContainerId}>
 
-                <p class="text-warning mb-0" style={{ fontWeight: 'bold' }}>Open task Alerts</p>
+            <p class="text-warning mb-0" style={{ fontWeight: 'bold' }}>Open task Alerts</p>
 
-                { (this.state.openTasks.length > 0) && <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row'}} >
-                    { this.state.openTasks.map( task => displayOpenTaskCard(task) ) }
-                </div>}
-            </div>
-        )
-    }
+            { (openTasks.length > 0) && <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row'}} >
+                { openTasks.map( task => displayOpenTaskCard(task) ) }
+            </div>}
+        </div>
+    )
 }

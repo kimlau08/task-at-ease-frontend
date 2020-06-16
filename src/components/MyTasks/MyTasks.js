@@ -268,6 +268,9 @@ export default class MyTasks extends Component {
         //delete locally
         this.deleteOwnerTask(event.target.id);
 
+        //update any open tasks
+        this.props.location.getOpenTasksCallback();
+
         //clear any prior status msg
         this.showStatusMsg("")
 
@@ -350,6 +353,7 @@ export default class MyTasks extends Component {
                         {/* Form to create a task */}
                         <TaskForm getUserCallback = {this.props.location.getUserCallback}
                                   getUserListCallback = {this.props.location.getUserListCallback}
+                                  updateOpenTasksCallback = {this.props.location.updateOpenTasksCallback}
                                   getAvailableUsersCallback = {this.props.location.getAvailableUsersCallback}
                                   getSelectedTaskIdCallback = {this.getSelectedTaskId}
                                   getSelectedTaskObjCallback = {this.getSelectedTaskObj}

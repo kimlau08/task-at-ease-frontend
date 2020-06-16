@@ -250,6 +250,7 @@ export default class TaskForm extends Component  {
             let taskObj = response.data;
             this.props.updateOwnerTaskCallback(taskObj);
             this.props.updateWorkerTaskCallback(taskObj);
+            this.props.updateOpenTasksCallback();
 
             //clear task form 
             this.clearForm();
@@ -273,6 +274,7 @@ export default class TaskForm extends Component  {
             //Add it to local list            
             let taskObj = response.data;
             this.props.addOwnerTaskCallBack(taskObj);
+            this.props.updateOpenTasksCallback();
 
             //clear task form 
             this.clearForm();

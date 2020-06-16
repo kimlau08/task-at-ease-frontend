@@ -25,7 +25,6 @@ const displaySampleTaskCard = (task) => {
 
 const displayDetailedTask = (task, props) => {
 
-
     const handleUpdateTask = (event) => {
 
         props.handleUpdateTaskCallback(task);

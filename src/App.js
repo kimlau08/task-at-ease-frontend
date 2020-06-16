@@ -15,7 +15,6 @@ import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import SlideTop from './components/SlideTop';
 import TasksCardList from './components/TasksCardList';
 import SampleTasks from './components/SampleTasks';
-import JumbotronMsg from './components/JumbotronMsg';
 
 import { Col, Row } from "react-bootstrap"
 import Container from 'react-bootstrap/Container'; 
@@ -32,10 +31,9 @@ export default class App extends Component {
       containerOnDisplay: "home-container",
       
       user: {},      //currently logged in user
-      userList: [],  //users 
+      userList: [],  //users in db
+      openTasks: [], //open tasks in db
       authResult: "in_progress",
-      taskOffered: false,
-      taskOfferMsg: "",
 
       myIP: "",
       myGeocode: {},
@@ -49,13 +47,13 @@ export default class App extends Component {
     this.setUser = this.setUser.bind(this);
     this.getUsers = this.getUsers.bind(this);    //get users from db
     this.getUserList = this.getUserList.bind(this);
-    this.getTaskOffered=this.getTaskOffered.bind(this);
-    this.setTaskOffered=this.setTaskOffered.bind(this);
     this.getZipRadius = this.getZipRadius.bind(this);
+    this.getTaskByStatus = this.getTaskByStatus.bind(this);
     this.showZipRadius = this.showZipRadius.bind(this);
     
     this.getMyIPAndZipcodesNearBy = this.getMyIPAndZipcodesNearBy.bind(this);
     this.getMyGeocode = this.getMyGeocode.bind(this);
+    this.updateOpenTasks = this.updateOpenTasks.bind(this);
     this.getZipcodesIn10Miles = this.getZipcodesIn10Miles.bind(this);
     this.getZipcodesIn20Miles = this.getZipcodesIn20Miles.bind(this);
     this.getZipcodesIn50Miles = this.getZipcodesIn50Miles.bind(this);
@@ -79,12 +77,8 @@ export default class App extends Component {
   setAvailableUsers(availableUsers) {
     this.state.availableUsers = availableUsers;
   }
-  getTaskOffered() {
-    return this.state.taskOffered;
-  }
-  setTaskOffered(offered, offerMsg) {
-    this.setState( {taskOffered: offered} );
-    this.setState(  {taskOfferMsg : offerMsg} );
+  updateOpenTasks() {
+    this.getTaskByStatus('open');
   }
   getZipRadius(zip) {
     
@@ -224,7 +218,25 @@ export default class App extends Component {
     }
   }
 
+  async getTaskByStatus(status) {
+    
+    try {
+      const response=await axios.get(`${dbDNS}/tae_api/v1/taskbystatus/${status}`);
+      console.log("getTaskByStatus response:", response.data);
+
+      if (status === "open") {
+
+        this.setState( {openTasks : response.data} );
+      }
+    
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   componentDidMount() {
+
+    this.getTaskByStatus("open")
 
     this.getUsers();
 
@@ -291,7 +303,6 @@ export default class App extends Component {
                       pathname: "/OurWorkers",
                       swapDisplayCallback: this.swapContainerOnDisplay,
                       getUserCallback: this.getUser,
-                      getOfferCallback : this.getTaskOffered,
                       getUserListCallback : this.getUserList
                     }}>Our Workers</Link>
               </li>
@@ -300,8 +311,8 @@ export default class App extends Component {
                       pathname: "/MyTasks",
                       swapDisplayCallback: this.swapContainerOnDisplay,
                       getUserCallback: this.getUser,
-                      getOfferCallback : this.getTaskOffered,
                       getUserListCallback : this.getUserList,
+                      updateOpenTasksCallback : this.updateOpenTasks,
                       showZipRadiusCallback : this.showZipRadius
                     }}>My Tasks</Link>
               </li>
@@ -310,8 +321,6 @@ export default class App extends Component {
                       pathname: "/Login",
                       swapDisplayCallback: this.swapContainerOnDisplay,
                       setUserCallback: this.setUser,
-                      getOfferCallback : this.getTaskOffered,
-                      setOfferCallback : this.setTaskOffered
                     }}>Login</Link>
               </li>
           </ul>
@@ -335,9 +344,6 @@ export default class App extends Component {
 
   render() {
 
-    let taskOffered = this.state.taskOffered;
-    let offereMsg = this.state.taskOfferMsg;
-
     return (
       <div className="App">
 
@@ -352,10 +358,7 @@ export default class App extends Component {
                 <Col sm={3}>
                   <div class="text-dark" >
 
-                    {taskOffered && <JumbotronMsg msg={offereMsg}  />}
-
-                    <OpenTaskAlerts />
-
+                    <OpenTaskAlerts openTasks={this.state.openTasks} />
 
                   </div>
                 </Col>
