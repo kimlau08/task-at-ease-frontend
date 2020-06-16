@@ -31,6 +31,8 @@ export default class MyTasks extends Component {
             selectedTaskId: defaultTaskId,
             selectedTaskObj: {},
             user: {},        //user logged in
+
+            panelActiveKey: 2 //default to open the "task you opened" Accordion panel
         }
 
         this.getTaskByWorker = this.getTaskByWorker.bind(this);
