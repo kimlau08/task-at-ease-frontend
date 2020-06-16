@@ -47,7 +47,7 @@ export default function SlideTop() {
     const showText1 = () => {
         return (
             <StyleRoot style={{width: '23%', 
-                                position: 'absolute', left: '11%', top: '18%' }} >
+                                position: 'absolute', left: '11%', top: '16%' }} >
                 <div style={stylesFast.bounceInDown}>
                     <p class="border border-white" style={{width: '100%', fontSize: '1.3vw',
                                 backgroundColor: 'grey', opacity: 0.8, color: 'white' }} >
@@ -61,9 +61,9 @@ export default function SlideTop() {
     const showText2 = () => {
         return (
             <StyleRoot style={{width: '28%', 
-                                position: 'absolute', right: '30%', top: '20%' }} >
+                                position: 'absolute', right: '30%', top: '18%' }} >
                 <div style={stylesFast.bounceInDown}>
-                    <p class="border border-white" style={{width: '100%',  fontSize: '1.7vw',
+                    <p class="border border-white" style={{width: '100%',  fontSize: '1.6vw',
                                 backgroundColor: 'grey', opacity: 0.8, color: 'white' }}>
                             Routine Housework: We help you to Complete Tasks in a Snap
                     </p>
@@ -76,9 +76,9 @@ export default function SlideTop() {
         return (
 
             <StyleRoot style={{width: '30%', 
-                                position: 'absolute', right: '20%', top: '30%' }} >
+                                position: 'absolute', right: '20%', top: '32%' }} >
                 <div style={stylesSlow.bounceInDown}>
-                    <p class="border border-white" style={{width: '100%',  fontSize: '2.0vw',
+                    <p class="border border-white" style={{width: '100%',  fontSize: '1.7vw',
                                 backgroundColor: 'grey', opacity: 0.8, color: 'white' }}>
                             Large and Small Projects: We are Here, so You Don't have to Worry
                     </p>
@@ -94,10 +94,10 @@ export default function SlideTop() {
             
             <img src={delivery} class="border border-white" 
                                     style={{width: '20%', 
-                                        position: 'absolute', left: '11%', top: '15%',
+                                        position: 'absolute', left: '11%', top: '13%',
                                         borderRadius: 10 }}  />
             <img src={houseCleaning} class="border border-white" style={{width: '20%',  
-                                        position: 'absolute', left: '35%', top: '10%', 
+                                        position: 'absolute', left: '35%', top: '8%', 
                                         borderRadius: 10 }}  />
 
             
