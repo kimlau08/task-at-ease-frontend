@@ -6,7 +6,7 @@ import UserCard from '../UserCard';
 import WorkerTaskCard from '../WorkerTaskCard';
 
 const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
-
+const workerTaskListMax = 3;
 export default class OurWorkers extends Component {
     constructor(props) {
         super(props);
@@ -148,6 +148,13 @@ export default class OurWorkers extends Component {
         this.setState( {workerTaskPhotos : workerTaskPhotoList } );
     }
 
+    padArrayWithEmptyObj(arr, max) {
+        for (let i=arr.length; i<max; i++) {
+            arr.push({});
+        }
+        return arr;
+    }
+
     displayWorkerAndTask(userObj) {
 
         let idx = this.state.workerTaskPhotos.findIndex( photoObj => photoObj.worker === userObj.id )
@@ -156,9 +163,10 @@ export default class OurWorkers extends Component {
         } 
 
         //photos and tasks arrays have the same arity, each corresponding elem belong to the same task
-        let photos = this.state.workerTaskPhotos[idx].photos.slice(0,4); //use up to 3 past project photos and description 
-        let tasks = this.state.workerTaskPhotos[idx].tasks.slice(0,4);
-        
+        let photos = this.state.workerTaskPhotos[idx].photos.slice(0,workerTaskListMax); //use up to 3 past project photos and description 
+        let tasks = this.state.workerTaskPhotos[idx].tasks.slice(0,workerTaskListMax);
+        photos = this.padArrayWithEmptyObj(photos, workerTaskListMax);
+        tasks = this.padArrayWithEmptyObj(tasks, workerTaskListMax);
 
         return (
             <div key={userObj.id}>
