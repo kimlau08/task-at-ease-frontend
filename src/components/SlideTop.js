@@ -47,7 +47,7 @@ export default function SlideTop() {
     const showText1 = () => {
         return (
             <StyleRoot style={{width: '23%', 
-                                position: 'absolute', left: '13%', top: '18%' }} >
+                                position: 'absolute', left: '11%', top: '18%' }} >
                 <div style={stylesFast.bounceInDown}>
                     <p class="border border-white" style={{width: '100%', fontSize: '1.3vw',
                                 backgroundColor: 'grey', opacity: 0.8, color: 'white' }} >
@@ -61,7 +61,7 @@ export default function SlideTop() {
     const showText2 = () => {
         return (
             <StyleRoot style={{width: '28%', 
-                                position: 'absolute', right: '30%', top: '18%' }} >
+                                position: 'absolute', right: '30%', top: '20%' }} >
                 <div style={stylesFast.bounceInDown}>
                     <p class="border border-white" style={{width: '100%',  fontSize: '1.7vw',
                                 backgroundColor: 'grey', opacity: 0.8, color: 'white' }}>
