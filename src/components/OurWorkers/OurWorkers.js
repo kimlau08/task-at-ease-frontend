@@ -162,7 +162,7 @@ export default class OurWorkers extends Component {
 
         return (
             <div key={userObj.id}>
-                { (this.state.users.length > 0) && <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row'}} >
+                { (this.state.users.length > 0) && <div class="card-group w-100 d-flex justify-content-center" style={{display: 'flex', flexDirection: 'row'}} >
 
                     <UserCard user={userObj} role="worker" ></UserCard>
 

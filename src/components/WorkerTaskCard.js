@@ -37,8 +37,8 @@ export default class WorkerTaskCard extends Component {
     
         return (
             <div className="task-card">
-                <div class="card p_3 ml-3 mb-3 bg-secondary text-white" style={{flex: 1, width: "300px", height: "450px" } } >
-                    {(!taskObjIsEmpty) && <img class="card-img-top" style={{height: "200px" }} src={taskImg} alt="a user" />}
+                <div class="card p_3 ml-3 mb-3 bg-secondary text-white" style={{flex: 1, width: "200px", height: "350px", fontSize: "12px" } } >
+                    {(!taskObjIsEmpty) && <img class="card-img-top" style={{height: "150px" }} src={taskImg} alt="a user" />}
 
                     { (!taskObjIsEmpty) && <div class="card-body">
                         <h6 class="card-title">Task Type: {taskObj.kind}</h6>
