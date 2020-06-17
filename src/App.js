@@ -208,8 +208,10 @@ export default class App extends Component {
 
   async getUsers() {
     
+    let urlPrefix = herokuProxy+dbDNS;
+
     try {
-      const response=await axios.get(`${dbDNS}/tae_api/v1/user`);
+      const response=await axios.get(`${urlPrefix}/tae_api/v1/user`);
       console.log("getUsers response:", response.data);
 
       this.setState( {userList : response.data} );

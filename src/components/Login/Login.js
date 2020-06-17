@@ -8,6 +8,7 @@ import './Login.css';
 
 const authResultMsgId = "auth-result-msg-id";
 const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
+const herokuProxy = 'https://cors-anywhere.herokuapp.com/';
 let authResult = "";
 export default class Login extends Component {
     constructor(props) {
@@ -59,10 +60,12 @@ export default class Login extends Component {
 
     async authenticateUser(email, password, authResultReady) {
 
+        let urlPrefix = herokuProxy+dbDNS;
+
         this.state.authResult = "in_progress"; 
     
         try {
-          const response=await axios.get(`${dbDNS}/tae_api/v1/user/${email}`);
+          const response=await axios.get(`${urlPrefix}/tae_api/v1/user/${email}`);
           console.log("getHTTP response:", response.data);
           
           let authResult = ( password === response.data.password ? "pass" : "fail" )
@@ -78,9 +81,11 @@ export default class Login extends Component {
     
 
     async getTasksByWorker(workerId) {
+
+    let urlPrefix = herokuProxy+dbDNS;
         
     try {
-        const response=await axios.get(`${dbDNS}/tae_api/v1/taskbyworker/${workerId}`);
+        const response=await axios.get(`${urlPrefix}/tae_api/v1/taskbyworker/${workerId}`);
         console.log("getTasksByWorker:", response.data);
 
         let openTask = response.data.filter( t => (t.status === "open")); 
