@@ -21,7 +21,6 @@ import Container from 'react-bootstrap/Container';
 
 const userNameId = "user-name";
 const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
-const herokuProxy = 'https://cors-anywhere.herokuapp.com/';
 
 export default class App extends Component {
   constructor(props) {
@@ -208,10 +207,8 @@ export default class App extends Component {
 
   async getUsers() {
     
-    let urlPrefix = herokuProxy+dbDNS;
-
     try {
-      const response=await axios.get(`${urlPrefix}/tae_api/v1/user`);
+      const response=await axios.get(`${dbDNS}/tae_api/v1/user`);
       console.log("getUsers response:", response.data);
 
       this.setState( {userList : response.data} );
@@ -222,11 +219,9 @@ export default class App extends Component {
   }
 
   async getTaskByStatus(status) {
-
-    let urlPrefix = herokuProxy+dbDNS;
     
     try {
-      const response=await axios.get(`${urlPrefix}/tae_api/v1/taskbystatus/${status}`);
+      const response=await axios.get(`${dbDNS}/tae_api/v1/taskbystatus/${status}`);
       console.log("getTaskByStatus response:", response.data);
 
       if (status === "open") {
