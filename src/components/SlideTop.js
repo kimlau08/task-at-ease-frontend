@@ -5,6 +5,7 @@ import layingTiles from '../assets/layingTiles.jpg';
 import delivery from '../assets/contactlessDelivery.webp';
 import houseCleaning from '../assets/houseCleaning.jpg';
 import paints from '../assets/paints.jpg';
+import peeledPaints from '../assets/peeledPaint.jpg';
 
 import { bounceInDown } from 'react-animations';
 import { hinge } from 'react-animations';
@@ -36,11 +37,18 @@ export default function SlideTop() {
             <StyleRoot style={{width: '25%', 
                                 position: 'absolute', right: '11%', top: '15%' }} >
                 <div style={stylesSlow.hinge}>
-                    <img src={paints} class="border border-white" style={{width: '100%',  
+                    <img id="hingedImg" src={peeledPaints} class="border border-white" style={{width: '100%',  
+                                                position: 'absolute', right: 0, top: '15%', 
+                                                borderRadius: 10 }}  />
+                </div>
+
+                <div>
+                    <img id="paintsImg" src={paints} class="border border-white" style={{width: '100%',  
                                                 position: 'absolute', right: 0, top: '15%', 
                                                 borderRadius: 10 }}  />
                 </div>
             </StyleRoot>
+            
         )
     }
 

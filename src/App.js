@@ -241,6 +241,23 @@ export default class App extends Component {
     this.getUsers();
 
     this.getMyIPAndZipcodesNearBy()
+
+    //make the hinged image dissappear after 5 sec
+    let hingedImage = document.getElementById("hingedImg");
+    if (hingedImage !== undefined) {
+      setTimeout(() => {
+        hingedImage.style.display="none";
+
+      }, 3000);
+    }
+    let paintsImg = document.getElementById("paintsImg");
+    if (paintsImg !== undefined) {
+      paintsImg.style.display="none";
+      setTimeout(() => {
+        paintsImg.style.display="";
+
+      }, 3000);
+    }
   }
 
   
@@ -265,8 +282,8 @@ export default class App extends Component {
       
     //Bootstrap display & slide needs explicity management
     if (toContainerId === "home-container") {
-      document.getElementById("bootstrap-contents").style.display=""
-      document.getElementById("slide-container").style.display=""
+      document.getElementById("bootstrap-contents").style.display="";
+      document.getElementById("slide-container").style.display="";
     }
 
     //Look for the container element to be swapped from
@@ -281,8 +298,8 @@ export default class App extends Component {
 
       //Bootstrap display & slide needs explicity management
       if (fromContainerId === "home-container") {
-        document.getElementById("bootstrap-contents").style.display="none"
-        document.getElementById("slide-container").style.display="none"
+        document.getElementById("bootstrap-contents").style.display="none";
+        document.getElementById("slide-container").style.display="none";
       }
     }
   }
