@@ -381,14 +381,14 @@ export default class App extends Component {
             <br /><br />
             <Container>
               <Row>
-                <Col lg={3}>
+                <Col md={3}>
                   <div class="text-dark" >
 
                     <OpenTaskAlerts openTasks={this.state.openTasks} />
 
                   </div>
                 </Col>
-                <Col lg={9}>
+                <Col md={9}>
                   <div class="p-3 mb-2 text-dark">
 
                     <TasksCardList cardList={SampleTasks} cardListType="samples" />
