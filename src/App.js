@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import {Route, Link, Switch, BrowserRouter as Router } from 'react-router-dom';
 
+import { Navbar,Nav,NavDropdown,Form,FormControl,Button } from 'react-bootstrap'
+
+
 import axios from 'axios';
 
 import Home from './components/Home/Home';
@@ -303,60 +306,66 @@ export default class App extends Component {
       }
     }
   }
-  
+
   navBar() {
     return (
-      <Router>
-        <nav className="menu">
-          <ul className="menu-bar">
-              <li>
-              <Link to={{
-                      pathname: "/Home",
-                      swapDisplayCallback: this.swapContainerOnDisplay
-                    }}>Home</Link>
-              </li>
-              <li>
-                  <Link to={{
-                      pathname: "/OurWorkers",
-                      swapDisplayCallback: this.swapContainerOnDisplay,
-                      getUserCallback: this.getUser,
-                      getUserListCallback : this.getUserList
-                    }}>Our Workers</Link>
-              </li>
-              <li>
-                  <Link to={{
-                      pathname: "/MyTasks",
-                      swapDisplayCallback: this.swapContainerOnDisplay,
-                      getUserCallback: this.getUser,
-                      getUserListCallback : this.getUserList,
-                      updateOpenTasksCallback : this.updateOpenTasks,
-                      showZipRadiusCallback : this.showZipRadius
-                    }}>My Tasks</Link>
-              </li>
-              <li>
-              <Link to={{
-                      pathname: "/Login",
-                      swapDisplayCallback: this.swapContainerOnDisplay,
-                      setUserCallback: this.setUser,
-                    }}>Login</Link>
-              </li>
-          </ul>
+      <div>
+          <div className="row">
+              <div className="col-md-12">
+                  <Router>
+                      <Navbar bg="warning" variant="light" expand="md" sticky="top">
+                          <Navbar.Brand>Task At Ease</Navbar.Brand>
+                          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                          <Navbar.Collapse id="basic-navbar-nav">
+                              <Nav className="mr-auto">
+                                <Link to={{
+                                  pathname: "/Home",
+                                  swapDisplayCallback: this.swapContainerOnDisplay
+                                }}>&nbsp;&nbsp;Home&nbsp;&nbsp;</Link>
+                                <Link  to={{
+                                  pathname: "/OurWorkers",
+                                  swapDisplayCallback: this.swapContainerOnDisplay,
+                                  getUserCallback: this.getUser,
+                                  getUserListCallback : this.getUserList
+                                }}>&nbsp;&nbsp;Our Workers&nbsp;&nbsp;</Link>
 
-          <p id={userNameId}></p>
+                                <Link to={{
+                                    pathname: "/MyTasks",
+                                    swapDisplayCallback: this.swapContainerOnDisplay,
+                                    getUserCallback: this.getUser,
+                                    getUserListCallback : this.getUserList,
+                                    updateOpenTasksCallback : this.updateOpenTasks,
+                                    showZipRadiusCallback : this.showZipRadius
+                                  }}>&nbsp;&nbsp;My Tasks&nbsp;&nbsp;</Link>
+                              
+                                <Link to={{
+                                  pathname: "/Login",
+                                  swapDisplayCallback: this.swapContainerOnDisplay,
+                                  setUserCallback: this.setUser,
+                                }}>&nbsp;&nbsp;Login&nbsp;&nbsp;</Link>
+                              </Nav>
+                              <Form inline>
+                                <p id={userNameId}></p>
+                              </Form>
+                          </Navbar.Collapse>
+                      </Navbar>
+                      <br />
 
-        </nav>
-        <Switch>
-          <Route exact path="/Home" component={Home} />
+                      <Switch>
+                        <Route exact path="/Home" component={Home} />
 
-          <Route exact path="/OurWorkers" component={OurWorkers} />
+                        <Route exact path="/OurWorkers" component={OurWorkers} />
 
-          <Route exact path="/MyTasks" component={MyTasks} />
+                        <Route exact path="/MyTasks" component={MyTasks} />
 
-          <Route exact path="/Login" component={Login} />
-        </Switch>
+                        <Route exact path="/Login" component={Login} />
+                      </Switch>
+                  </Router>
 
-      </Router>
-    )
+              </div>
+          </div>
+      </div>
+    )  
   }
 
   render() {
@@ -372,14 +381,14 @@ export default class App extends Component {
             <br /><br />
             <Container>
               <Row>
-                <Col sm={3}>
+                <Col lg={3}>
                   <div class="text-dark" >
 
                     <OpenTaskAlerts openTasks={this.state.openTasks} />
 
                   </div>
                 </Col>
-                <Col sm={9}>
+                <Col lg={9}>
                   <div class="p-3 mb-2 text-dark">
 
                     <TasksCardList cardList={SampleTasks} cardListType="samples" />

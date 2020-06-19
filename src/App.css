@@ -7,7 +7,7 @@ html {
   text-align: center;
 }
 
-ul {
+ul, li {
   list-style-type:none;
 }
 a {
@@ -46,7 +46,7 @@ a:active {
     width: 100px;
     height: 20px;
     margin-right: 20px;
+    margin-top: 10px;
 
-    font-weight: bold;
-    color: blue;
+    color: crimson;
   }
