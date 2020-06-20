@@ -325,8 +325,6 @@ export default class App extends Component {
                                 <Link  to={{
                                   pathname: "/OurWorkers",
                                   swapDisplayCallback: this.swapContainerOnDisplay,
-                                  getUserCallback: this.getUser,
-                                  getUserListCallback : this.getUserList
                                 }}>&nbsp;&nbsp;Our Workers&nbsp;&nbsp;</Link>
 
                                 <Link to={{

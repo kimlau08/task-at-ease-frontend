@@ -61,10 +61,6 @@ export default class OurWorkers extends Component {
 
     componentDidMount() {
 
-        if (this.props.location.getUserListCallback === undefined) {
-            return;
-        } 
-
         this.joinPhotoTaskUser();
     }
 
