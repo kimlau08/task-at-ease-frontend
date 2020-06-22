@@ -204,8 +204,8 @@ export default class MyTasks extends Component {
     async getTaskByOwner(ownerId) {
     
         try {
-          const response=await axios.get(`${dbDNS}/tae_api/v1/task/${ownerId}`);
-          console.log(`getTaskByWorker (worker:${ownerId}) response:`, response.data);
+          const response=await axios.get(`${dbDNS}/tae_api/v1/taskbyowner/${ownerId}`);
+          console.log(`getTaskByOwner (owner:${ownerId}) response:`, response.data);
 
           this.setState( {tasksOwned : response.data} );
 
@@ -271,7 +271,7 @@ export default class MyTasks extends Component {
         this.deleteOwnerTask(event.target.id);
 
         //update any open tasks
-        this.props.location.getOpenTasksCallback();
+        this.props.location.updateOpenTasksCallback();
 
         //clear any prior status msg
         this.showStatusMsg("")
@@ -356,7 +356,7 @@ export default class MyTasks extends Component {
                         <TaskForm getUserCallback = {this.props.location.getUserCallback}
                                   getUserListCallback = {this.props.location.getUserListCallback}
                                   updateOpenTasksCallback = {this.props.location.updateOpenTasksCallback}
-                                  getAvailableUsersCallback = {this.props.location.getAvailableUsersCallback}
+        //   getAvailableUsersCallback = {this.props.location.getAvailableUsersCallback}
                                   getSelectedTaskIdCallback = {this.getSelectedTaskId}
                                   getSelectedTaskObjCallback = {this.getSelectedTaskObj}
                                   setSelectedTaskIdCallback = {this.setSelectedTaskId}
@@ -365,8 +365,9 @@ export default class MyTasks extends Component {
                                   updateWorkerTaskCallback = {this.updateWorkerTask}
                                   showZipRadiusCallback = {this.props.location.showZipRadiusCallback}
                                   statusMsgAreaId = {statusMsgAreaId}
-                                    ownerTasks = {ownerTasks} 
-                                    workingTasks = {workingTasks}  />
+        // ownerTasks = {ownerTasks} 
+        // workingTasks = {workingTasks}
+                                      />
 
                     </Card.Body>
                     </Accordion.Collapse>

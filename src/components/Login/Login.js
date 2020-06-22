@@ -63,7 +63,7 @@ export default class Login extends Component {
     
         try {
           const response=await axios.get(`${dbDNS}/tae_api/v1/user/${email}`);
-          console.log("getHTTP response:", response.data);
+          console.log("authenticateUser response:", response.data);
           
           let authResult = ( password === response.data.password ? "pass" : "fail" )
           this.setState( {user : response.data} );
