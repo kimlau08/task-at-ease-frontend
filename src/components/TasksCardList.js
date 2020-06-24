@@ -162,7 +162,7 @@ const displayTaskTable = (props) => {
     const photoFormatter = (cell, row) => {
 
         let userImg = (row.photo !== null) ? imgSvrDNS + row.photo : genericImg;
-        return (<img style={{width: '30px'}} src={userImg}/>)
+        return (<img style={{width: '30px'}} src={userImg} />)
     }
 
     const nameFormatter = (cell, row) => {
@@ -188,15 +188,31 @@ const displayTaskTable = (props) => {
             props.handleUpdateTaskCallback(row);
         }
 
-        return ( 
-            <button class="btn" onClick={handleUpdateTask} >
-               <img style={{width: '30px'}} id={row.id} src={updateIcon}/>
-            </button>
+        if (disableUpdate) {  //disable button and opague img
+            return ( <button class="btn" onClick={handleUpdateTask} disabled>
+                    <img style={{opacity: 0.6, width: '30px'}} id={row.id} src={updateIcon} />
+                    </button>
+                )
+        } 
+
+        return (  <button class="btn" onClick={handleUpdateTask} >
+                <img style={{width: '30px'}} id={row.id} src={updateIcon} />
+                  </button> 
             )
+
     }
     const deleteFormatter = (cell, row) => {
+
+        if (disableDelete) { //disable button and opague img
+            return ( 
+                <button class="btn" onClick={props.handleDeleteTaskCallback} disabled>
+                   <img style={{opacity: 0.6, width: '30px'}} id={row.id} src={deleteIcon} />
+                </button>
+                )
+        }
+
         return ( 
-            <button class="btn" onClick={props.handleDeleteTaskCallback} >
+            <button class="btn" onClick={props.handleDeleteTaskCallback}>
                <img style={{width: '30px'}} id={row.id} src={deleteIcon}/>
             </button>
             )

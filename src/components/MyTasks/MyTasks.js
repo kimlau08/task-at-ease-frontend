@@ -614,8 +614,6 @@ addOwnerTaskCallBack = {this.addOwnerTask}
 
                 {this.displayTaskSection1(this.state.taskWorkerListForOwner, this.state.taskOwnerListForWorker)}
 
-<h2>Test sections</h2>
-{this.displayTaskSections(ownerTasks, workingTasks, completedTasks)}
 
             </div>
         )
