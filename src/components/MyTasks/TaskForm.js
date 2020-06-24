@@ -273,8 +273,11 @@ export default class TaskForm extends Component  {
             //Successful create. The response has the new record with new id. 
             //Add it to local list            
             let taskObj = response.data;
-            this.props.addOwnerTaskCallBack(taskObj);
-            this.props.updateOpenTasksCallback();
+
+this.props.addOwnerTaskCallBack(taskObj);
+
+            this.props.updateLocalTasksCallback(newTaskObj);
+            this.props.updateOpenTasksCallback(newTaskObj);
 
             //clear task form 
             this.clearForm();
@@ -357,7 +360,7 @@ export default class TaskForm extends Component  {
 
 
         return (
-            <UserCard user={userObj} role="worker" clickCallback={this.handleCardClick} ></UserCard>
+            <UserCard key={userObj.id} user={userObj} role="worker" clickCallback={this.handleCardClick} ></UserCard>
         )
     }
 

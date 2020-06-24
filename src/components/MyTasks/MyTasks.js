@@ -10,6 +10,20 @@ import './MyTasks.css';
 import Accordion from 'react-bootstrap/Accordion';
 import {Card} from 'react-bootstrap';
 
+
+/**from TasksCardList.js ... */
+import { Col, Row } from "react-bootstrap"
+import { Container } from 'react-bootstrap';
+
+import genericImg from '../../assets/generic_person.png';
+import updateIcon from '../../assets/update_icon.png';
+import deleteIcon from '../../assets/delete_icon.png';
+
+const notApplicable = "N/A";
+const imgSvrDNS = process.env.REACT_APP_HEROKU_EXPRESS_SVR;
+
+
+
 const statusMsgAreaId = "status-msg-area";
 const defaultTaskId = -1; 
 const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
@@ -32,8 +46,12 @@ export default class MyTasks extends Component {
             selectedTaskObj: {},
             user: {},        //user logged in
 
+            taskOwnerListForWorker: [], //result of inner join from task to worker for a owner
+            taskWorkerListForOwner: [], //result of left join from task to owner for a worker. A task may not have been assigned a worker yet.
+
             panelActiveKey: 2 //default to open the "task you opened" Accordion panel
         }
+
 
         this.getTaskByWorker = this.getTaskByWorker.bind(this);
         this.getTaskByOwner = this.getTaskByOwner.bind(this);
@@ -41,8 +59,9 @@ export default class MyTasks extends Component {
 
         this.showStatusMsg = this.showStatusMsg.bind(this);
 
+        this.updateLocalTaskList = this.updateLocalTaskList.bind(this);
         this.deleteOwnerTask = this.deleteOwnerTask.bind(this);
-        this.addOwnerTask = this.addOwnerTask.bind(this);
+this.addOwnerTask = this.addOwnerTask.bind(this);
         this.addMyWorkers = this.addMyWorkers.bind(this);
         this.addMyOwners = this.addMyOwners.bind(this);
         this.updateOwnerTask = this.updateOwnerTask.bind(this);
@@ -57,6 +76,31 @@ export default class MyTasks extends Component {
         this.deleteTaskById = this.deleteTaskById.bind(this);
     }
 
+    async joinTaskWorkerForOwner(userId) {
+
+        try {
+            const response=await axios.get(`${dbDNS}/tae_api/v1/taskjoinworkerforowner/${userId}`);
+            console.log(`joinTaskWorkerForOwner owner:${userId} response:`, response.data);
+  
+            this.setState( {taskWorkerListForOwner : response.data} );
+  
+          } catch (e) {
+            console.error(e);
+          }
+        
+    }
+    async joinTaskOwnerForWorker(userId) {
+
+        try {
+            const response=await axios.get(`${dbDNS}/tae_api/v1/taskjoinownerforworker/${userId}`);
+            console.log(`joinTaskOwnerForWorker worker:${userId}  response:`, response.data);
+  
+            this.setState( {taskOwnerListForWorker : response.data} );
+  
+          } catch (e) {
+            console.error(e);
+          }
+    }
     showStatusMsg(msg) {
         document.getElementById(statusMsgAreaId).innerHTML = msg;
     }
@@ -144,14 +188,38 @@ export default class MyTasks extends Component {
 
     updateOwnerTask(taskObj) {
 
-        let taskList = this.state.tasksOwned.map( t => ( t.id === taskObj.id ? taskObj : t ) )
-        this.setState( {tasksOwned: taskList} )
+//complex way
+let taskList = this.state.tasksOwned.map( t => ( t.id === taskObj.id ? taskObj : t ) )
+this.setState( {tasksOwned: taskList} )
+
+        if (this.state.user.id === taskObj.owner) {
+            
+            this.joinTaskWorkerForOwner(taskObj.owner)
+        }
     }
 
     updateWorkerTask(taskObj) {
 
-        let taskList = this.state.tasksWorked.map( t => ( t.id === taskObj.id ? taskObj : t ) )
-        this.setState( {tasksWorked: taskList} )
+//complex way
+let taskList = this.state.tasksWorked.map( t => ( t.id === taskObj.id ? taskObj : t ) )
+this.setState( {tasksWorked: taskList} )
+
+        if (this.state.user.id === taskObj.worker) {
+
+            this.joinTaskOwnerForWorker(taskObj.worker)
+        }
+    }
+
+    updateLocalTaskList(taskObj) {
+
+        if (this.state.user.id === taskObj.owner) {
+
+            this.joinTaskWorkerForOwner(taskObj.owner)
+        }
+        if (this.state.user.id === taskObj.worker) {
+
+            this.joinTaskOwnerForWorker(taskObj.worker)
+        }
     }
 
     componentDidMount() {
@@ -172,6 +240,15 @@ export default class MyTasks extends Component {
             this.showStatusMsg("Please login first.")   
             return;  //no user logged in
         }
+
+
+        //query tasks worked 
+        this.joinTaskOwnerForWorker(userId);
+
+        //query tasks owned (opened by user)
+        this.joinTaskWorkerForOwner(userId);
+
+
 
         //query tasks by worker
         this.getTaskByWorker(userId);
@@ -257,8 +334,12 @@ export default class MyTasks extends Component {
             const response=await axios.delete(`${dbDNS}/tae_api/v1/task/${taskId}`);
             console.log("deleteTaskById response:", response.data);
 
-            //refresh owner tasks
-            this.getTaskByOwner(this.state.user.id);
+//refresh owner tasks
+this.getTaskByOwner(this.state.user.id);
+
+            //refresh owner and worker tasks
+            this.joinTaskWorkerForOwner(this.state.user.id);
+            this.joinTaskOwnerForWorker(this.state.user.id);
 
             //update any open tasks
             this.props.location.updateOpenTasksCallback();
@@ -270,8 +351,8 @@ export default class MyTasks extends Component {
 
     handleDeleteTask(event) {
 
-        //delete locally
-        this.deleteOwnerTask(event.target.id);
+//delete locally
+this.deleteOwnerTask(event.target.id);
 
         //clear any prior status msg
         this.showStatusMsg("")
@@ -286,7 +367,7 @@ export default class MyTasks extends Component {
         this.setState( {selectedTaskId: taskObj.id} )
         this.setState( {selectedTaskObj: taskObj});
 
-        this.showStatusMsg("Updating task with the following content")
+        this.showStatusMsg("Open the following task to add update")
 
         this.fillTaskForm(taskObj);
     }
@@ -334,6 +415,69 @@ export default class MyTasks extends Component {
         uncompletedTasks = acceptedTasks.concat( openTasks );
     }
 
+    displayTaskSection1(ownedTasks, workedTasks) {
+
+        return (
+            <Accordion defaultActiveKey="1" >
+                <Card>
+                    <Accordion.Toggle style={{height: 50, backgroundColor: 'grey', color: 'white', marginBottom: 50}} as={Card.Header} eventKey="0">
+                        Open a Task
+                    </Accordion.Toggle>
+
+                    <Accordion.Collapse eventKey="0">
+                    <Card.Body>
+                        {/* Form to create a task */}
+                        <TaskForm getUserCallback = {this.props.location.getUserCallback}
+                                  getUserListCallback = {this.props.location.getUserListCallback}
+                                  updateOpenTasksCallback = {this.props.location.updateOpenTasksCallback}
+                                  getSelectedTaskIdCallback = {this.getSelectedTaskId}
+                                  getSelectedTaskObjCallback = {this.getSelectedTaskObj}
+                                  setSelectedTaskIdCallback = {this.setSelectedTaskId}
+    addOwnerTaskCallBack = {this.addOwnerTask}
+                                  updateLocalTasksCallback = {this.updateLocalTaskList}
+                                  updateOwnerTaskCallback = {this.updateOwnerTask}
+                                  updateWorkerTaskCallback = {this.updateWorkerTask}
+                                  showZipRadiusCallback = {this.props.location.showZipRadiusCallback}
+                                  statusMsgAreaId = {statusMsgAreaId}
+                                      />
+
+                    </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
+
+                <Card>
+                    <Accordion.Toggle style={{color: 'blue', marginBottom: 50 }} as={Card.Header} eventKey="1">
+                        View your tasks
+                    </Accordion.Toggle>
+
+                    <Accordion.Collapse eventKey="1">
+                    <Card.Body>
+
+
+                        <h5 style={{color: 'green', fontSize: '16px', marginTop: 30, marginBottom: 30}} >Tasks Opened By You</h5>
+                    
+                        <TasksCardList cardList={ ownedTasks } 
+                                            cardListType="details"
+                                            handleUpdateTaskCallback = {this.handleUpdateTask}
+                                            handleDeleteTaskCallback = {this.handleDeleteTask}
+                                            position="Worker"  />
+
+
+                        <h5 style={{color: 'grey', fontSize: '16px', marginTop: 30, marginBottom: 30 }} >Tasks Worked By You</h5>
+
+                        <TasksCardList cardList={ workedTasks } 
+                                            cardListType="details"
+                                            handleUpdateTaskCallback = {this.handleUpdateTask}
+                                            position="Owner"  />
+
+                    </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
+            </Accordion>
+        )
+
+    }
+
     displayTaskSections(ownerTasks, workingTasks, completedTasks) {
 
         let myWorkers = this.state.myWorkers;
@@ -341,7 +485,7 @@ export default class MyTasks extends Component {
 
         return ( 
 
-        <div>
+        <div>            
 
             <Accordion defaultActiveKey={3} >
                 <Card>
@@ -359,7 +503,8 @@ export default class MyTasks extends Component {
                                   getSelectedTaskIdCallback = {this.getSelectedTaskId}
                                   getSelectedTaskObjCallback = {this.getSelectedTaskObj}
                                   setSelectedTaskIdCallback = {this.setSelectedTaskId}
-                                  addOwnerTaskCallBack = {this.addOwnerTask}
+addOwnerTaskCallBack = {this.addOwnerTask}
+                                  updateLocalTasksCallback = {this.updateLocalTaskList}
                                   updateOwnerTaskCallback = {this.updateOwnerTask}
                                   updateWorkerTaskCallback = {this.updateWorkerTask}
                                   showZipRadiusCallback = {this.props.location.showZipRadiusCallback}
@@ -467,7 +612,10 @@ export default class MyTasks extends Component {
 
                 <h5 id={statusMsgAreaId} style={{ color: 'red',  marginTop: 50, marginBottom: 50 }} ></h5>
 
-                {this.displayTaskSections(ownerTasks, workingTasks, completedTasks)}
+                {this.displayTaskSection1(this.state.taskWorkerListForOwner, this.state.taskOwnerListForWorker)}
+
+<h2>Test sections</h2>
+{this.displayTaskSections(ownerTasks, workingTasks, completedTasks)}
 
             </div>
         )
