@@ -34,7 +34,6 @@ export default class App extends Component {
       containerOnDisplay: "home-container",
       
       user: {},      //currently logged in user
-      userList: [],  //users in db
       openTasks: [], //open tasks in db
       authResult: "in_progress",
 
@@ -48,8 +47,6 @@ export default class App extends Component {
     
     this.getUser = this.getUser.bind(this);
     this.setUser = this.setUser.bind(this);
-    this.getUsers = this.getUsers.bind(this);    //get users from db
-    this.getUserList = this.getUserList.bind(this);
     this.getZipRadius = this.getZipRadius.bind(this);
     this.getTaskByStatus = this.getTaskByStatus.bind(this);
     this.showZipRadius = this.showZipRadius.bind(this);
@@ -73,9 +70,6 @@ export default class App extends Component {
     this.setState( {user: userObj} );
 
     document.getElementById(userNameId).innerHTML = userObj.name;
-  }
-  getUserList() {
-    return this.state.userList;
   }
   setAvailableUsers(availableUsers) {
     this.state.availableUsers = availableUsers;
@@ -208,19 +202,6 @@ export default class App extends Component {
     }
   }
 
-  async getUsers() {
-    
-    try {
-      const response=await axios.get(`${dbDNS}/tae_api/v1/user`);
-      console.log("getUsers response:", response.data);
-
-      this.setState( {userList : response.data} );
-
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
   async getTaskByStatus(status) {
     
     try {
@@ -241,7 +222,7 @@ export default class App extends Component {
 
     this.getTaskByStatus("open")
 
-    this.getUsers();
+// this.getUsers();
 
     this.getMyIPAndZipcodesNearBy()
 
@@ -331,7 +312,6 @@ export default class App extends Component {
                                     pathname: "/MyTasks",
                                     swapDisplayCallback: this.swapContainerOnDisplay,
                                     getUserCallback: this.getUser,
-                                    getUserListCallback : this.getUserList,
                                     updateOpenTasksCallback : this.updateOpenTasks,
                                     showZipRadiusCallback : this.showZipRadius
                                   }}>&nbsp;&nbsp;My Tasks&nbsp;&nbsp;</Link>

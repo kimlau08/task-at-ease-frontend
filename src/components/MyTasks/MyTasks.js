@@ -11,36 +11,15 @@ import Accordion from 'react-bootstrap/Accordion';
 import {Card} from 'react-bootstrap';
 
 
-/**from TasksCardList.js ... */
-import { Col, Row } from "react-bootstrap"
-import { Container } from 'react-bootstrap';
-
-import genericImg from '../../assets/generic_person.png';
-import updateIcon from '../../assets/update_icon.png';
-import deleteIcon from '../../assets/delete_icon.png';
-
-const notApplicable = "N/A";
-const imgSvrDNS = process.env.REACT_APP_HEROKU_EXPRESS_SVR;
-
-
-
 const statusMsgAreaId = "status-msg-area";
 const defaultTaskId = -1; 
 const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
-let closedTasks = [];
-let openTasks = [];
-let acceptedTasks = [];
-let uncompletedTasks = [];
+
 export default class MyTasks extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-
-            tasksWorked: [], //list of tasks worked by user
-            tasksOwned: [],  //list of tasks opened by user
-            myWorkers: [],
-            myOwners: [],
 
             selectedTaskId: defaultTaskId,
             selectedTaskObj: {},
@@ -53,19 +32,9 @@ export default class MyTasks extends Component {
         }
 
 
-        this.getTaskByWorker = this.getTaskByWorker.bind(this);
-        this.getTaskByOwner = this.getTaskByOwner.bind(this);
-        this.getUserById = this.getUserById.bind(this);
-
         this.showStatusMsg = this.showStatusMsg.bind(this);
 
         this.updateLocalTaskList = this.updateLocalTaskList.bind(this);
-        this.deleteOwnerTask = this.deleteOwnerTask.bind(this);
-this.addOwnerTask = this.addOwnerTask.bind(this);
-        this.addMyWorkers = this.addMyWorkers.bind(this);
-        this.addMyOwners = this.addMyOwners.bind(this);
-        this.updateOwnerTask = this.updateOwnerTask.bind(this);
-        this.updateWorkerTask = this.updateWorkerTask.bind(this);
         
         this.handleUpdateTask = this.handleUpdateTask.bind(this);
         this.handleDeleteTask = this.handleDeleteTask.bind(this);
@@ -120,95 +89,6 @@ this.addOwnerTask = this.addOwnerTask.bind(this);
             this.setState( {selectedTaskObj : {} } );
         }
     }
-    deleteOwnerTask(taskId) {  //delete task locally
-
-        //look up task
-        let taskList = this.state.tasksOwned;
-        let idx = taskList.findIndex( t => t.id === taskId )
-        if (idx >= 0) {
-
-            //delete task
-            taskList.splice(idx, 1);
-            this.setState( {tasksOwned: taskList }  )
-        }
-    }
-
-    addOwnerTask(taskObj) {
-
-        this.setState( { tasksOwned: this.state.tasksOwned.concat( [ taskObj ] ) } );
-        this.addMyOwners(taskObj.owner);
-        this.addMyWorkers(taskObj.worker);
-    }
-
-    addMyWorkers( workerId ) {
-
-        if (workerId === this.state.user.id) {  //same as login user
-            return;
-        }
-        
-        let idx = this.state.myWorkers.findIndex( u => workerId === u.id );
-        if (idx >= 0) {
-            return;  //worker already on the list
-        }
-
-        //find worker info
-        let userList = this.props.location.getUserListCallback();
-        idx = userList.findIndex(  u => workerId === u.id );
-
-        //add worker info
-        let myWorkerList = this.state.myWorkers;
-        if (idx >= 0) {
-            myWorkerList.push( userList[idx] );
-        }
-        this.setState( { myWorkers : myWorkerList } );
-    }
-
-    addMyOwners( ownerId ) {
-
-        if (ownerId === this.state.user.id) {  //same as login user
-            return;
-        }
-
-        let idx = this.state.myOwners.findIndex( u => ownerId === u.id );
-        if (idx >= 0) {
-            return;  //owner already on the list
-        }
-
-        //find owner info
-        let userList = this.props.location.getUserListCallback();
-        idx = userList.findIndex(  u => ownerId === u.id );
-
-        //add owner info
-        let myOwnerList = this.state.myOwners;
-        if (idx >= 0) {
-            myOwnerList.push( userList[idx] );
-        }
-        this.setState( { myOwners : myOwnerList } )
-    }
-
-    updateOwnerTask(taskObj) {
-
-//complex way
-let taskList = this.state.tasksOwned.map( t => ( t.id === taskObj.id ? taskObj : t ) )
-this.setState( {tasksOwned: taskList} )
-
-        if (this.state.user.id === taskObj.owner) {
-            
-            this.joinTaskWorkerForOwner(taskObj.owner)
-        }
-    }
-
-    updateWorkerTask(taskObj) {
-
-//complex way
-let taskList = this.state.tasksWorked.map( t => ( t.id === taskObj.id ? taskObj : t ) )
-this.setState( {tasksWorked: taskList} )
-
-        if (this.state.user.id === taskObj.worker) {
-
-            this.joinTaskOwnerForWorker(taskObj.worker)
-        }
-    }
 
     updateLocalTaskList(taskObj) {
 
@@ -248,98 +128,18 @@ this.setState( {tasksWorked: taskList} )
         //query tasks owned (opened by user)
         this.joinTaskWorkerForOwner(userId);
 
-
-
-        //query tasks by worker
-        this.getTaskByWorker(userId);
-
-        //query tasks by owner
-        this.getTaskByOwner(userId);
     }
-
-    async getTaskByWorker(workerId) {
     
-        try {
-          const response=await axios.get(`${dbDNS}/tae_api/v1/taskbyworker/${workerId}`);
-          console.log(`getTaskByWorker (worker:${workerId}) response:`, response.data);
-
-          this.setState( {tasksWorked : response.data} );
-
-          //look up owner info, if it is not found
-          response.data.map( taskObj => {
-              let idx = this.state.myOwners.findIndex( o => ( o.id === taskObj.owner ) )
-              if (idx < 0) {
-                  this.getUserById( taskObj.owner, "owner" )
-              }
-          } ); 
-
-        } catch (e) {
-          console.error(e);
-        }
-    }
-
-    async getTaskByOwner(ownerId) {
-    
-        try {
-          const response=await axios.get(`${dbDNS}/tae_api/v1/taskbyowner/${ownerId}`);
-          console.log(`getTaskByOwner (owner:${ownerId}) response:`, response.data);
-
-          this.setState( {tasksOwned : response.data} );
-
-        //look up worker info, if it is not found, and a worker has been picked, i.e worker > 0
-        response.data.map( taskObj => {
-            let idx = this.state.myWorkers.findIndex( w => ( w.id === taskObj.worker ) )
-            if (idx < 0 && taskObj.worker > 0) {
-                this.getUserById( taskObj.worker, "worker" )
-            }
-        } ); 
-
-        } catch (e) {
-          console.error(e);
-        }
-    }
-
-    async getUserById(userId, position) {
-    
-        try {
-          const response=await axios.get(`${dbDNS}/tae_api/v1/userbyid/${userId}`);
-          console.log(`getUserById (user:${userId}) response:`, response.data);
-
-          switch (position) {
-
-            case "owner":   //we got an owner's info. update myOwners state
-
-                this.setState( {myOwners: this.state.myOwners.concat( [ response.data ] )} );
-                break;
-
-            case "worker":  //we got a worker's info. update myWorkers state
-
-                this.setState( {myWorkers: this.state.myWorkers.concat( [ response.data ] )} );
-                break;
-
-            default:
-                console.log(`**Unknown position in getUserById. position: ${position}`)
-          }
-
-        } catch (e) {
-          console.log(`getUserById error response (user:${userId}. position: ${position})`)
-          console.error(e);
-        }
-    }
-
-    
-    async deleteTaskById(taskId) {
+    async deleteTaskById(taskObj) {
                 
+        let taskId = taskObj.id;
+
         try {
             const response=await axios.delete(`${dbDNS}/tae_api/v1/task/${taskId}`);
             console.log("deleteTaskById response:", response.data);
 
-//refresh owner tasks
-this.getTaskByOwner(this.state.user.id);
-
             //refresh owner and worker tasks
-            this.joinTaskWorkerForOwner(this.state.user.id);
-            this.joinTaskOwnerForWorker(this.state.user.id);
+            this.updateLocalTaskList(taskObj);
 
             //update any open tasks
             this.props.location.updateOpenTasksCallback();
@@ -349,16 +149,13 @@ this.getTaskByOwner(this.state.user.id);
             }
     }
 
-    handleDeleteTask(event) {
-
-//delete locally
-this.deleteOwnerTask(event.target.id);
+    handleDeleteTask(taskObj) {
 
         //clear any prior status msg
         this.showStatusMsg("")
 
         //delete in db
-        this.deleteTaskById(event.target.id);
+        this.deleteTaskById(taskObj);
     }
 
     handleUpdateTask(taskObj) {
@@ -385,37 +182,7 @@ this.deleteOwnerTask(event.target.id);
 
     }
 
-    categorizeTasks(taskList) {
-
-        //group together completed tasks. for uncompleted tasks, put open tasks ahead of accepted tasks
-
-        closedTasks = [];
-        openTasks = [];
-        acceptedTasks = [];
-        uncompletedTasks = [];
-
-        taskList.map( t => {
-            switch (t.status) {
-
-            case "closed":
-                closedTasks.push(t);
-                break;
-
-            case "accepted":
-                acceptedTasks.push(t);
-                break;
-
-            case "open":
-                openTasks.push(t);
-                break;
-            default: 
-            }
-        });
-
-        uncompletedTasks = acceptedTasks.concat( openTasks );
-    }
-
-    displayTaskSection1(ownedTasks, workedTasks) {
+    displayTaskSections(ownedTasks, workedTasks) {
 
         return (
             <Accordion defaultActiveKey="1" >
@@ -428,15 +195,11 @@ this.deleteOwnerTask(event.target.id);
                     <Card.Body>
                         {/* Form to create a task */}
                         <TaskForm getUserCallback = {this.props.location.getUserCallback}
-                                  getUserListCallback = {this.props.location.getUserListCallback}
                                   updateOpenTasksCallback = {this.props.location.updateOpenTasksCallback}
                                   getSelectedTaskIdCallback = {this.getSelectedTaskId}
                                   getSelectedTaskObjCallback = {this.getSelectedTaskObj}
                                   setSelectedTaskIdCallback = {this.setSelectedTaskId}
-    addOwnerTaskCallBack = {this.addOwnerTask}
                                   updateLocalTasksCallback = {this.updateLocalTaskList}
-                                  updateOwnerTaskCallback = {this.updateOwnerTask}
-                                  updateWorkerTaskCallback = {this.updateWorkerTask}
                                   showZipRadiusCallback = {this.props.location.showZipRadiusCallback}
                                   statusMsgAreaId = {statusMsgAreaId}
                                       />
@@ -452,7 +215,6 @@ this.deleteOwnerTask(event.target.id);
 
                     <Accordion.Collapse eventKey="1">
                     <Card.Body>
-
 
                         <h5 style={{color: 'green', fontSize: '16px', marginTop: 30, marginBottom: 30}} >Tasks Opened By You</h5>
                     
@@ -478,105 +240,6 @@ this.deleteOwnerTask(event.target.id);
 
     }
 
-    displayTaskSections(ownerTasks, workingTasks, completedTasks) {
-
-        let myWorkers = this.state.myWorkers;
-        let myOwners = this.state.myOwners;
-
-        return ( 
-
-        <div>            
-
-            <Accordion defaultActiveKey={3} >
-                <Card>
-                    <Accordion.Toggle style={{height: 50, backgroundColor: 'grey', color: 'white', marginBottom: 50}} as={Card.Header} eventKey="0">
-                        Create a Task
-                    </Accordion.Toggle>
-
-                    <Accordion.Collapse eventKey="0">
-                    <Card.Body>
-
-                        {/* Form to create a task */}
-                        <TaskForm getUserCallback = {this.props.location.getUserCallback}
-                                  getUserListCallback = {this.props.location.getUserListCallback}
-                                  updateOpenTasksCallback = {this.props.location.updateOpenTasksCallback}
-                                  getSelectedTaskIdCallback = {this.getSelectedTaskId}
-                                  getSelectedTaskObjCallback = {this.getSelectedTaskObj}
-                                  setSelectedTaskIdCallback = {this.setSelectedTaskId}
-addOwnerTaskCallBack = {this.addOwnerTask}
-                                  updateLocalTasksCallback = {this.updateLocalTaskList}
-                                  updateOwnerTaskCallback = {this.updateOwnerTask}
-                                  updateWorkerTaskCallback = {this.updateWorkerTask}
-                                  showZipRadiusCallback = {this.props.location.showZipRadiusCallback}
-                                  statusMsgAreaId = {statusMsgAreaId}
-                                      />
-
-                    </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-
-                <Card>
-                    <Accordion.Toggle style={{color: 'green', marginBottom: 50}} as={Card.Header} eventKey="1">
-                        View Tasks you opened
-                    </Accordion.Toggle>
-
-                    <Accordion.Collapse eventKey="1">
-                    <Card.Body>
-
-                        {/* display owned tasks */}
-
-                        <TasksCardList cardList={ ownerTasks } 
-                                    cardListType="details"
-                                    handleUpdateTaskCallback = {this.handleUpdateTask}
-                                    handleDeleteTaskCallback = {this.handleDeleteTask}
-                                    position="Worker" partnerList={myWorkers} />
-
-                    </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-                
-                <Card>
-                    <Accordion.Toggle style={{color: 'orange', marginBottom: 50}} as={Card.Header} eventKey="2">
-                        View Tasks you working on
-                    </Accordion.Toggle>
-
-                    <Accordion.Collapse eventKey="2">
-                    <Card.Body>
-
-                        {/* display working tasks */}
-
-                        <TasksCardList cardList={ workingTasks } 
-                                    cardListType="details"
-                                    handleUpdateTaskCallback = {this.handleUpdateTask}
-                                    position="Owner" partnerList={myOwners} />
-
-                    </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-                
-                <Card>
-                    <Accordion.Toggle style={{color: 'blue', marginBottom: 50 }} as={Card.Header} eventKey="3">
-                        View Tasks you completed
-                    </Accordion.Toggle>
-
-                    <Accordion.Collapse eventKey="3">
-                    <Card.Body>
-
-                        {/* display completed tasks */}
-
-                        <TasksCardList cardList={ completedTasks } 
-                                        cardListType="details"
-                                        position="Owner" partnerList={myOwners} />
-
-                    </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-            </Accordion>
-        </div>
-            
-        )
-    }
-
     render() {
         
         if (Object.keys(this.props).length === 0 && this.props.constructor === Object) {
@@ -596,24 +259,12 @@ addOwnerTaskCallBack = {this.addOwnerTask}
                 </div>)
         }
 
-        //catogrized worked tasks: group together completed tasks. for uncompleted tasks, put open tasks ahead of accepted tasks
-        this.categorizeTasks(this.state.tasksWorked);
-        let workingTasks = uncompletedTasks;
-        let completedTasks = closedTasks;
-
-        //catogrized owner tasks: put open tasks ahead of accepted tasks, and then the closed tasks
-        this.categorizeTasks(this.state.tasksOwned);
-        let ownerTasks = openTasks.concat( acceptedTasks ).concat( closedTasks );
-    
-
-
         return (
             <div id={toContainerId}>
 
                 <h5 id={statusMsgAreaId} style={{ color: 'red',  marginTop: 50, marginBottom: 50 }} ></h5>
 
-                {this.displayTaskSection1(this.state.taskWorkerListForOwner, this.state.taskOwnerListForWorker)}
-
+                {this.displayTaskSections(this.state.taskWorkerListForOwner, this.state.taskOwnerListForWorker)}
 
             </div>
         )

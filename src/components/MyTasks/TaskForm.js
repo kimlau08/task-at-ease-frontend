@@ -37,11 +37,11 @@ export default class TaskForm extends Component  {
 
         this.state = {
 
-            users: [],
             allSkills: [],  //list of all skills from db-for building skill list
             user: {},       //user after login
             skillListByWorker: [],  //array of worker id and skill list
 
+            availableUsers: [], //list of free users from db
             matchedWorkers: [],
             selectedWorkerId: defaultWorkerId, 
             selectedTaskId: defaultTaskId,
@@ -102,6 +102,10 @@ export default class TaskForm extends Component  {
     }
 
     findAvailableWorkers(userList, userObj) {
+
+        this.setState(  {availableUsers: 
+                    userList.filter(u => (u.free === "Y"  && u.id !== userObj.id) ) } )
+
         return userList.filter(u => (u.free === "Y"  && u.id !== userObj.id) ) ;
     }
     
@@ -234,6 +238,21 @@ export default class TaskForm extends Component  {
         this.updateTaskById(newTaskObj);
 
     }
+
+    async getFreeUsers() {
+    
+        try {
+          const response=await axios.get(`${dbDNS}/tae_api/v1/useravailable/Y`);
+          console.log(`getFreeUsers response:`, response.data);
+
+          this.setState( {availableUsers : response.data} );
+
+          this.findAvailableWorkers(response.data, this.state.user);
+
+        } catch (e) {
+          console.error(e);
+        }
+    }
     
     async updateTaskById (newTaskObj) {
 
@@ -248,8 +267,8 @@ export default class TaskForm extends Component  {
 
             //Successful update. update local task list item to indicate ack  
             let taskObj = response.data;
-            this.props.updateOwnerTaskCallback(taskObj);
-            this.props.updateWorkerTaskCallback(taskObj);
+
+            this.props.updateLocalTasksCallback(taskObj);
             this.props.updateOpenTasksCallback();
 
             //clear task form 
@@ -274,10 +293,8 @@ export default class TaskForm extends Component  {
             //Add it to local list            
             let taskObj = response.data;
 
-this.props.addOwnerTaskCallBack(taskObj);
-
-            this.props.updateLocalTasksCallback(newTaskObj);
-            this.props.updateOpenTasksCallback(newTaskObj);
+            this.props.updateLocalTasksCallback(taskObj);
+            this.props.updateOpenTasksCallback(taskObj);
 
             //clear task form 
             this.clearForm();
@@ -320,14 +337,16 @@ this.props.addOwnerTaskCallBack(taskObj);
           console.error(e);
         }
     }
-
+    
     findSkillsByWorker(workerSkills) { 
 
         //initialize with user id and skills. to be filled with skillList found for each worker
-        let skillListByWorker = this.state.users.map( u => 
-                                ( { worker: u.id, 
-                                    skillList : []} )  );
-        
+
+        let skillListByWorker = this.state.availableUsers.map( u => 
+            ( { worker: u.id, 
+                skillList : []} )  );
+
+
         //create list of skills by each worker
         for (let i=0; i<workerSkills.length; i++) {  //list of known skills for workers
             let idx = skillListByWorker.findIndex( s => s.worker === workerSkills[i].worker ) //list of workers. each to be associated with their skill lists
@@ -349,11 +368,13 @@ this.props.addOwnerTaskCallBack(taskObj);
             return  //no callback to get user info
         }
 
-        //query all skills to build option list
-        this.getSkills();
+        this.getFreeUsers();
 
-        //query all user skills
-        this.getWorkerSkills();
+//query all skills to build option list
+this.getSkills();
+
+//query all user skills
+this.getWorkerSkills();
     }
 
     displayUserCard( userObj ) {
@@ -387,12 +408,8 @@ this.props.addOwnerTaskCallBack(taskObj);
         let userObj = this.props.getUserCallback()
         this.state.user = userObj;
 
-        let userList = this.props.getUserListCallback();
-        this.state.users = userList;
-
         //initialize matches to available workers
-        this.state.matchedWorkers = this.findAvailableWorkers(this.state.users, this.state.user);
-
+        this.state.matchedWorkers = this.state.availableUsers;
         
         let toContainerId = "mytasks-container";
     
