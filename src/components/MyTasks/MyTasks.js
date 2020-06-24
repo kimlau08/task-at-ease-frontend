@@ -164,7 +164,7 @@ export default class MyTasks extends Component {
         this.setState( {selectedTaskId: taskObj.id} )
         this.setState( {selectedTaskObj: taskObj});
 
-        this.showStatusMsg("Open the following task to add update")
+        this.showStatusMsg("Open the following to update")
 
         this.fillTaskForm(taskObj);
     }

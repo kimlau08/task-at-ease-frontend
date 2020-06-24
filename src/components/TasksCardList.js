@@ -6,7 +6,7 @@ import updateIcon from '../assets/update_icon.png';
 import deleteIcon from '../assets/delete_icon.png';
 
 import BootstrapTable from 'react-bootstrap-table-next';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter'; 
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter'; 
 
 const notApplicable = "N/A";
 const imgSvrDNS = process.env.REACT_APP_HEROKU_EXPRESS_SVR;
@@ -93,7 +93,13 @@ const displayTaskTable = (props) => {
             </button>
             )
     }
-    
+
+    const selectStatusOptions = {
+        open: 'open',
+        accepted: 'accepted',
+        closed: 'closed'
+    }
+
 
     let tasks = props.cardList;
     let position = props.position;
@@ -127,7 +133,10 @@ const displayTaskTable = (props) => {
             dataField: 'status',
             text: 'Status',
             sort: true,
-            filter: textFilter()
+            formatter: cell => selectStatusOptions[cell], 
+            filter: selectFilter({
+                options: selectStatusOptions
+            })
         }, {
             dataField: 'hours',
             text: 'Hours',
