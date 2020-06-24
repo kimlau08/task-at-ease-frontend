@@ -24,6 +24,7 @@ import Container from 'react-bootstrap/Container';
 
 const userNameId = "user-name";
 const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
+const openTaskAlertMax = 3;  //only list a max of 3 items
 
 export default class App extends Component {
   constructor(props) {
@@ -34,7 +35,7 @@ export default class App extends Component {
       containerOnDisplay: "home-container",
       
       user: {},      //currently logged in user
-      openTasks: [], //open tasks in db
+      openTasks: [], //open tasks in db. Limit to max (openTaskAlertMax) of 3 tasks to show as alert
       authResult: "in_progress",
 
       myIP: "",
@@ -210,7 +211,7 @@ export default class App extends Component {
 
       if (status === "open") {
 
-        this.setState( {openTasks : response.data} );
+        this.setState( {openTasks : response.data.slice(0, openTaskAlertMax)} );
       }
     
     } catch (e) {
@@ -221,8 +222,6 @@ export default class App extends Component {
   componentDidMount() {
 
     this.getTaskByStatus("open")
-
-// this.getUsers();
 
     this.getMyIPAndZipcodesNearBy()
 
