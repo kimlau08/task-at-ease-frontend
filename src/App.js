@@ -25,6 +25,7 @@ import Container from 'react-bootstrap/Container';
 const userNameId = "user-name";
 const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
 const openTaskAlertMax = 3;  //only list a max of 3 items
+const defaultLoginUserId = 3; //user 3, (i.e. U3 Newsome) is the default user for demo purpose
 
 export default class App extends Component {
   constructor(props) {
@@ -70,7 +71,7 @@ export default class App extends Component {
   setUser(userObj) {
     this.setState( {user: userObj} );
 
-    document.getElementById(userNameId).innerHTML = userObj.name;
+    document.getElementById(userNameId).innerHTML = `Logged in as ${userObj.name}`;
   }
   setAvailableUsers(availableUsers) {
     this.state.availableUsers = availableUsers;
@@ -219,9 +220,23 @@ export default class App extends Component {
     }
   }
 
+  async getDefaultUser(userId) {
+    try {
+      const response=await axios.get(`${dbDNS}/tae_api/v1/userbyid/${userId}`);
+      console.log("getTaskByStatus response:", response.data);
+
+      this.setUser(response.data);
+
+      } catch (e) {
+      console.error(e);
+    }
+  }
+
   componentDidMount() {
 
-    this.getTaskByStatus("open")
+    this.getTaskByStatus("open");
+
+    this.getDefaultUser(defaultLoginUserId);
 
     this.getMyIPAndZipcodesNearBy()
 

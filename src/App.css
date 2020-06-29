@@ -43,10 +43,11 @@ a:active {
   }
 
   #user-name {
-    width: 100px;
+    width: 200px;
     height: 20px;
     margin-right: 20px;
     margin-top: 10px;
 
+    font-size: 14px;
     color: crimson;
   }

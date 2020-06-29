@@ -17,13 +17,13 @@ export default function WorkerTaskCard1(props) {
 
     let taskObjIsEmpty = ( Object.keys(taskDetailObj).length === 0 && taskDetailObj.constructor === Object )
     
-    let skillRequired = "";
+    let subtasks = "";
     
     if (!taskObjIsEmpty) {   //taskObj is not empty
 
-        skillRequired = skillRequired.concat( (taskDetailObj.skill1 !== notApplicable ? taskDetailObj.skill1 : "") );
-        skillRequired = skillRequired.concat( (taskDetailObj.skill2 !== notApplicable ? ", "+taskDetailObj.skill2 : "") );
-        skillRequired = skillRequired.concat( (taskDetailObj.skill3 !== notApplicable ? ", "+taskDetailObj.skill3 : "") );
+        subtasks = subtasks.concat( (taskDetailObj.skill1 !== notApplicable ? taskDetailObj.skill1 : "") );
+        subtasks = subtasks.concat( (taskDetailObj.skill2 !== notApplicable ? ", "+taskDetailObj.skill2 : "") );
+        subtasks = subtasks.concat( (taskDetailObj.skill3 !== notApplicable ? ", "+taskDetailObj.skill3 : "") );
     } 
 
     return (
@@ -35,7 +35,7 @@ export default function WorkerTaskCard1(props) {
                 { (!taskObjIsEmpty) && <div class="card-body">
                     <h6 class="card-title">Task Type: {taskDetailObj.kind}</h6>
                     <p class="card-text">Description: {taskDetailObj.details}</p>
-                    <p class="card-text">Skills: {skillRequired}</p>
+                    <p class="card-text">Subtasks: {subtasks}</p>
                     </div>
                     }      
                 { (!taskObjIsEmpty) && <div class="card-footer">
@@ -49,7 +49,6 @@ export default function WorkerTaskCard1(props) {
                 { (taskObjIsEmpty) && <div class="card-body">
                     <h6 class="card-title">Task Type: To be provided</h6>
                     <p class="card-text">Description: To be provided in a future date</p>
-                    <p class="card-text">Skills: To be provided</p>
                     </div>
                     }      
 

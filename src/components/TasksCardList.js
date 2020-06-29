@@ -41,14 +41,14 @@ const displayTaskTable = (props) => {
         return userName;
     }
 
-    const skillFormatter = (cell, row) => {
-        let skillRequired = "";
+    const subtasksFormatter = (cell, row) => {
+        let subtasks = "";
         
-        skillRequired = skillRequired.concat( (row.skill1 !== notApplicable ? row.skill1 : "") );
-        skillRequired = skillRequired.concat( (row.skill2 !== notApplicable ? ", "+row.skill2 : "") );
-        skillRequired = skillRequired.concat( (row.skill3 !== notApplicable ? ", "+row.skill3 : "") );
+        subtasks = subtasks.concat( (row.skill1 !== notApplicable ? row.skill1 : "") );
+        subtasks = subtasks.concat( (row.skill2 !== notApplicable ? ", "+row.skill2 : "") );
+        subtasks = subtasks.concat( (row.skill3 !== notApplicable ? ", "+row.skill3 : "") );
 
-        return ( <p>{skillRequired}</p>)
+        return ( <p>{subtasks}</p>)
     }
 
     const updateFormatter = (cell, row) => {
@@ -117,13 +117,14 @@ const displayTaskTable = (props) => {
         }, {
             dataField: 'details',
             text: 'Desc',
+            sort: true,
             filter: textFilter()
         }, {
             dataField: 'skill1',
-            text: 'Skills',
+            text: 'Subtasks',
             sort: true,
             filter: textFilter(),
-            formatter: skillFormatter  //consolidate skill fields
+            formatter: subtasksFormatter  //consolidate skill fields
         }, {
             dataField: 'kind',
             text: 'Type',
