@@ -10,7 +10,7 @@ const displayOpenTaskCard = (task) => {
 
     return (
         <div key={task.id}>
-            <div class="card ml-3 mt-3 border border-warning" style={{flex: 1, width: "180px", height: "350px", flexWrap: 'wrap' }} >
+            <div class="card ml-3 mt-3 border border-warning" style={{width: "180px", height: "350px",  flexWrap: 'wrap' }} >
                 <div class="card-body">
                     <h6 class="card-title">{task.details}</h6>
                     <p class="card-text">Owner: {task.ownername}</p>

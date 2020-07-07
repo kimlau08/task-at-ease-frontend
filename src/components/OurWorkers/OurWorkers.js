@@ -89,7 +89,7 @@ export default class OurWorkers extends Component {
         
         return (
             <div key={userDetailObj.name}>
-                <div class="card-group w-100 d-flex justify-content-center" style={{display: 'flex', flexDirection: 'row'}} >
+                <div class="card-group w-100 d-flex justify-content-center" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}} >
 
                     <UserCard user={userDetailObj} role="worker" ></UserCard>
 
