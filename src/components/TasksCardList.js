@@ -175,7 +175,7 @@ export default function TasksCardList(props) {
     return (
         <div className="card-list">
 
-            { samples && <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row'}} >
+            { samples && <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}} >
                 { tasks.map( task => displaySampleTaskCard(task) ) }
             </div> }
 
