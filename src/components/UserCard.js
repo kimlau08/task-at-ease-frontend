@@ -15,13 +15,18 @@ export default function UserCard(props) {
     let role = props.role;
 
     let clickHandlerFound = (props.clickCallback !== undefined);
+    let compactMode = (props.compact === "true");
     let HandleClick = props.clickCallback;
 
     return (
         <div className="user-card">
-            <div class="card p_3 ml-3 mb-3 bg-info text-white" style={{flex: 1, justifyContent: "center", width: "200px", height: "350px", fontSize: "12px" } } >
+            <div class="card ml-3 mb-3 bg-info text-white" 
+                style={ compactMode ? 
+                    {display: 'flex', flexDirection: 'row', 
+                    justifyContent: "space-evenly", width: "320px", height: "160px", fontSize: "12px" }
+                :  {justifyContent: "center", width: "200px", height: "350px", fontSize: "12px" }} >
                 { !clickHandlerFound && <img class="card-img-top" style={{width: "80px",height: "80px", margin: "50px auto", marginBottom: "20px" }} src={userImg} alt="a user" /> }
-                { clickHandlerFound && <img class="card-img-top mt-4" style={{width: "80px",height: "80px", margin: "50px auto", marginBottom: "20px" }} src={userImg} alt="a user" onClick={HandleClick} name={userStr} id={userObj.id} /> }
+                { clickHandlerFound && <img class="card-img-top ml-3 mt-4" style={{width: "80px",height: "80px", margin: "50px auto", marginBottom: "20px" }} src={userImg} alt="a user" onClick={HandleClick} name={userStr} id={userObj.id} /> }
                 { !clickHandlerFound &&  <div class="card-body">
                     <h6 class="card-title">Name: {userObj.name}</h6>
                     <p class="card-text">Contact info: {userObj.email}</p>
@@ -35,7 +40,7 @@ export default function UserCard(props) {
                     <p class="card-text">Zip: {userObj.st} {userObj.zip} </p>
                 </div> }
                 
-                {role === "worker" && <div class="card-footer">
+                {!compactMode && role === "worker" && <div class="card-footer">
                     <small class="text-warning">Available: {userObj.free}</small>
                 </div>}
             </div>

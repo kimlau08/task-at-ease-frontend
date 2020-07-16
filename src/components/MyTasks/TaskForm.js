@@ -381,7 +381,7 @@ this.getWorkerSkills();
 
 
         return (
-            <UserCard key={userObj.id} user={userObj} role="worker" clickCallback={this.handleCardClick} ></UserCard>
+            <UserCard key={userObj.id} user={userObj} role="worker" compact="true" clickCallback={this.handleCardClick} ></UserCard>
         )
     }
 

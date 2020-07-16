@@ -10,7 +10,7 @@ const displayOpenTaskCard = (task) => {
 
     return (
         <div key={task.id}>
-            <div class="card ml-3 mt-3 border border-warning" style={{width: "180px", height: "350px",  flexWrap: 'wrap' }} >
+            <div class="card ml-3 mt-3 border border-warning" style={{width: "180px", height: "350px"}} >
                 <div class="card-body">
                     <h6 class="card-title">{task.details}</h6>
                     <p class="card-text">Owner: {task.ownername}</p>
@@ -43,7 +43,7 @@ export default function OpenTaskAlerts(props) {
 
             <p class="text-warning mb-0" style={{ fontWeight: 'bold' }}>Open task Alerts</p>
 
-            { (openTasks.length > 0) && <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row'}} >
+            { (openTasks.length > 0) && <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }} >
                 { openTasks.map( task => displayOpenTaskCard(task) ) }
             </div>}
         </div>
