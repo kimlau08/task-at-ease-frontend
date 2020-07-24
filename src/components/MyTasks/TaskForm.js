@@ -50,6 +50,8 @@ export default class TaskForm extends Component  {
             skill1: "N/A",
             skill2: "N/A",
             skill3: "N/A",
+
+            formUpdated: false  //mark form updated to prevent fillTaskForm from updating values
         }
 
         this.getSkills = this.getSkills.bind(this);
@@ -72,6 +74,11 @@ export default class TaskForm extends Component  {
         //apply filter
         this.skillsMatched = this.skillsMatched.bind(this);
 
+    }
+
+    setFormUpdated() {
+        //mark form updated to prevent fillTaskForm from updating values
+        this.setState({ formUpdated: true });
     }
 
     checkUserLogin(checkResultAreaId) {
@@ -146,16 +153,20 @@ export default class TaskForm extends Component  {
         //set worker info in card
         document.getElementById("field08").value = parseInt(event.target.id);
         this.setState(  {selectedWorkerId : parseInt(event.target.id)} );
+        this.setFormUpdated();  
     }
     handleSkill1Change = (event) => {
+        this.setFormUpdated();
         this.setState ( { skill1: event.target.value });
     }
      
     handleSkill2Change = (event) => {
+        this.setFormUpdated();
         this.setState ( { skill2: event.target.value });
     }
 
     handleSkill3Change = (event) => {
+        this.setFormUpdated();
         this.setState ( { skill3: event.target.value });
     }
 
@@ -403,7 +414,9 @@ this.getWorkerSkills();
         let currentTaskObj = this.props.getSelectedTaskObjCallback();
         let emptyCurrentTask = (Object.keys(currentTaskObj).length === 0 && currentTaskObj.constructor === Object);
 
-        if (emptyCurrentTask || document.getElementById("field01") === null) {
+        if (this.state.formUpdated ||
+            emptyCurrentTask || 
+            document.getElementById("field01") === null) {
             return;
         }
 
@@ -424,7 +437,8 @@ this.getWorkerSkills();
             return <div></div>  //props is empty
         }
 
-        this.state.selectedTaskId = this.props.getSelectedTaskIdCallback();
+        this.state.selectedTaskId = this.props.getSelectedTaskIdCallback();        let currentTaskObj = this.props.getSelectedTaskObjCallback();
+        let emptyCurrentTask = (Object.keys(currentTaskObj).length === 0 && currentTaskObj.constructor === Object);
         let userObj = this.props.getUserCallback()
         this.state.user = userObj;
 
@@ -452,6 +466,7 @@ this.getWorkerSkills();
                                         type="text"
                                         as="select"
                                         defaultValue= "N/A"
+                                        onChange={this.setFormUpdated.bind(this)} 
                                     >    
 
                                         {taskTypeOptionList( this.state.allSkills )}
@@ -476,6 +491,7 @@ this.getWorkerSkills();
                                         aria-describedby="inputGroupPrepend"
                                         required
                                         defaultValue= "0"
+                                        onChange={this.setFormUpdated.bind(this)} 
                                     />
                                     <Form.Control.Feedback type="invalid">
                                         Please specify total hours expected.
@@ -492,6 +508,7 @@ this.getWorkerSkills();
                                     type="textarea"
                                     placeholder="Please describe task"
                                     defaultValue= ""
+                                    onChange={this.setFormUpdated.bind(this)} 
                                 />
                             </Form.Group>
                         </Form.Row>
@@ -559,6 +576,7 @@ this.getWorkerSkills();
                                         type="text"
                                         as="select"
                                         defaultValue= "open"
+                                        onChange={this.setFormUpdated.bind(this)} 
                                     >    
 
                                         {taskStatusOptionList()}
@@ -573,8 +591,9 @@ this.getWorkerSkills();
                                     <Form.Control
                                         name="worker"
                                         type="number"
-                                        defaultValue= "0"           
+                                        defaultValue= "0"    
                                         placeholder="click image to select"
+                                        onChange={this.setFormUpdated.bind(this)} 
                                     >    
                                     </Form.Control>
                             </Form.Group>

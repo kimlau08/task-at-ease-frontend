@@ -212,7 +212,7 @@ export default function TaskTable(props) {
             sort: true,
             filter: textFilter()
         }, {
-            dataField: 'skill3',
+            dataField: 'skill2',
             text: 'Update',
             formatter: updateFormatter //display the clickable icon
         }, {

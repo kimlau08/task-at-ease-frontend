@@ -94,6 +94,9 @@ export default class MyTasks extends Component {
 
     updateLocalTaskList(taskObj) {
 
+        
+        this.setState({ openModal: false }) //close the modal task form
+
         if (this.state.user.id === taskObj.owner) {
 
             this.joinTaskWorkerForOwner(taskObj.owner)
