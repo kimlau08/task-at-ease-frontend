@@ -15,9 +15,12 @@
     "react-bootstrap-table-next": "^4.0.3",
     "react-bootstrap-table2-filter": "^1.3.3",
     "react-dom": "^16.13.1",
+    "react-responsive-modal": "^5.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "react-slideshow-image": "^1.5.3"
+    "react-scroll-into-view": "^1.8.2",
+    "react-slideshow-image": "^1.5.3",
+    "rodal": "^1.8.1"
   },
   "scripts": {
     "start": "react-scripts start",

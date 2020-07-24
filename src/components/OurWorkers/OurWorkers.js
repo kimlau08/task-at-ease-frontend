@@ -91,7 +91,7 @@ export default class OurWorkers extends Component {
             <div key={userDetailObj.name}>
                 <div class="card-group w-100 d-flex justify-content-center" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}} >
 
-                    <UserCard user={userDetailObj} role="worker" ></UserCard>
+                    <UserCard key={userDetailObj.id} user={userDetailObj} role="worker" ></UserCard>
 
                     {/* display the list of task photos for this worker user */}
                     { tasksByUserObj.photoTaskUserList.map( (taskDetailObj) => {

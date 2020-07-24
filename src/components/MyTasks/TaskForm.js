@@ -298,6 +298,7 @@ export default class TaskForm extends Component  {
 
             //clear task form 
             this.clearForm();
+            this.props.closeFormCallBack();
 
             //de-select task item
             this.clearSelectedTask();
@@ -381,7 +382,7 @@ this.getWorkerSkills();
 
 
         return (
-            <UserCard key={userObj.id} user={userObj} role="worker" compact="true" clickCallback={this.handleCardClick} ></UserCard>
+            <UserCard key={userObj.id} user={userObj} role="worker" compact={false} clickCallback={this.handleCardClick} ></UserCard>
         )
     }
 
@@ -389,12 +390,32 @@ this.getWorkerSkills();
         return (
             <div>
                 <h3 style={{marginTop: 80 }}>Available Workers</h3>
-                <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}} >
+                <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap'}} >
 
                     { this.state.matchedWorkers.map( u => this.displayUserCard(u) ) }
                 </div> 
             </div>
         )
+    }
+
+    fillTaskForm() {
+
+        let currentTaskObj = this.props.getSelectedTaskObjCallback();
+        let emptyCurrentTask = (Object.keys(currentTaskObj).length === 0 && currentTaskObj.constructor === Object);
+
+        if (emptyCurrentTask || document.getElementById("field01") === null) {
+            return;
+        }
+
+        document.getElementById("field01").value = currentTaskObj.kind;
+        document.getElementById("field02").value = currentTaskObj.hours;
+        document.getElementById("field03").value = currentTaskObj.details;
+        document.getElementById("field04").value = currentTaskObj.skill1;
+        document.getElementById("field05").value = currentTaskObj.skill2;
+        document.getElementById("field06").value = currentTaskObj.skill3;
+        document.getElementById("field07").value = currentTaskObj.status;
+        document.getElementById("field08").value = currentTaskObj.worker;
+
     }
 
     render() {
@@ -404,7 +425,6 @@ this.getWorkerSkills();
         }
 
         this.state.selectedTaskId = this.props.getSelectedTaskIdCallback();
-
         let userObj = this.props.getUserCallback()
         this.state.user = userObj;
 
@@ -431,7 +451,7 @@ this.getWorkerSkills();
                                         required
                                         type="text"
                                         as="select"
-                                        defaultValue="N/A" 
+                                        defaultValue= "N/A"
                                     >    
 
                                         {taskTypeOptionList( this.state.allSkills )}
@@ -455,6 +475,7 @@ this.getWorkerSkills();
                                         placeholder="total hours"
                                         aria-describedby="inputGroupPrepend"
                                         required
+                                        defaultValue= "0"
                                     />
                                     <Form.Control.Feedback type="invalid">
                                         Please specify total hours expected.
@@ -470,6 +491,7 @@ this.getWorkerSkills();
                                     name="details"
                                     type="textarea"
                                     placeholder="Please describe task"
+                                    defaultValue= ""
                                 />
                             </Form.Group>
                         </Form.Row>
@@ -486,7 +508,7 @@ this.getWorkerSkills();
                                         required
                                         type="text"
                                         as="select"
-                                        defaultValue="N/A" 
+                                        defaultValue= "N/A"
                                         onChange={this.handleSkill1Change} 
                                     >    
 
@@ -505,7 +527,7 @@ this.getWorkerSkills();
                                         name="skill2"
                                         type="text"
                                         as="select"
-                                        defaultValue="N/A" 
+                                        defaultValue= "N/A"
                                         onChange={this.handleSkill2Change} 
                                     >    
 
@@ -520,7 +542,7 @@ this.getWorkerSkills();
                                         name="skill3"
                                         type="text"
                                         as="select"
-                                        defaultValue="N/A" 
+                                        defaultValue= "N/A"
                                         onChange={this.handleSkill3Change} 
                                     >    
 
@@ -536,7 +558,7 @@ this.getWorkerSkills();
                                         name="status"
                                         type="text"
                                         as="select"
-                                        defaultValue="open" 
+                                        defaultValue= "open"
                                     >    
 
                                         {taskStatusOptionList()}
@@ -551,7 +573,7 @@ this.getWorkerSkills();
                                     <Form.Control
                                         name="worker"
                                         type="number"
-                                        defaultValue="0"                                     
+                                        defaultValue= "0"           
                                         placeholder="click image to select"
                                     >    
                                     </Form.Control>
@@ -567,9 +589,12 @@ this.getWorkerSkills();
                     </Form>
                 </Container>
 
+                <div>
+                    {this.fillTaskForm()}
+                </div>
                 
                 <div>
-                        {this.displayMatchedWorkers()}
+                    {this.displayMatchedWorkers()}
                 </div>
             </div>
         )

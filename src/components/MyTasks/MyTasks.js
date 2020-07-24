@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import { Redirect } from 'react-router-dom';
+import {Modal} from 'react-responsive-modal';
+import 'react-responsive-modal/styles.css';
 
 import TasksCardList from '../TasksCardList';
 import TaskForm from './TaskForm';
 import './MyTasks.css';
 
-import Accordion from 'react-bootstrap/Accordion';
 import {Card} from 'react-bootstrap';
 
 
@@ -20,7 +21,6 @@ export default class MyTasks extends Component {
         super(props);
 
         this.state = {
-
             selectedTaskId: defaultTaskId,
             selectedTaskObj: {},
             user: {},        //user logged in
@@ -28,7 +28,8 @@ export default class MyTasks extends Component {
             taskOwnerListForWorker: [], //result of inner join from task to worker for a owner
             taskWorkerListForOwner: [], //result of left join from task to owner for a worker. A task may not have been assigned a worker yet.
 
-            panelActiveKey: 2 //default to open the "task you opened" Accordion panel
+            openModal: false,   //to open/close the modal form for creating/updating a task
+            panelActiveKey: 2   //default to open the "task you opened" Accordion panel
         }
 
 
@@ -38,6 +39,7 @@ export default class MyTasks extends Component {
         
         this.handleUpdateTask = this.handleUpdateTask.bind(this);
         this.handleDeleteTask = this.handleDeleteTask.bind(this);
+        this.handleCreateTask = this.handleCreateTask.bind(this);
         this.getSelectedTaskId = this.getSelectedTaskId.bind(this);
         this.getSelectedTaskObj = this.getSelectedTaskObj.bind(this);
         this.setSelectedTaskId = this.setSelectedTaskId.bind(this);
@@ -164,56 +166,19 @@ export default class MyTasks extends Component {
         this.setState( {selectedTaskId: taskObj.id} )
         this.setState( {selectedTaskObj: taskObj});
 
-        this.showStatusMsg("Open the following to update")
-
-        this.fillTaskForm(taskObj);
+        this.setState({ openModal: true }) //open the modal form
     }
 
-    fillTaskForm(taskObj) {
+    handleCreateTask() {
 
-        document.getElementById("field01").value = taskObj.kind;
-        document.getElementById("field02").value = taskObj.hours;
-        document.getElementById("field03").value = taskObj.details;
-        document.getElementById("field04").value = taskObj.skill1;
-        document.getElementById("field05").value = taskObj.skill2;
-        document.getElementById("field06").value = taskObj.skill3;
-        document.getElementById("field07").value = taskObj.status;
-        document.getElementById("field08").value = taskObj.worker;
-
+        this.setState({ openModal: true }) //open the modal form
     }
 
     displayTaskSections(ownedTasks, workedTasks) {
 
         return (
-            <Accordion defaultActiveKey="1" >
-                <Card>
-                    <Accordion.Toggle style={{height: 50, backgroundColor: 'grey', color: 'white', marginBottom: 50}} as={Card.Header} eventKey="0">
-                        Open a Task
-                    </Accordion.Toggle>
-
-                    <Accordion.Collapse eventKey="0">
-                    <Card.Body>
-                        {/* Form to create a task */}
-                        <TaskForm getUserCallback = {this.props.location.getUserCallback}
-                                  updateOpenTasksCallback = {this.props.location.updateOpenTasksCallback}
-                                  getSelectedTaskIdCallback = {this.getSelectedTaskId}
-                                  getSelectedTaskObjCallback = {this.getSelectedTaskObj}
-                                  setSelectedTaskIdCallback = {this.setSelectedTaskId}
-                                  updateLocalTasksCallback = {this.updateLocalTaskList}
-                                  showZipRadiusCallback = {this.props.location.showZipRadiusCallback}
-                                  statusMsgAreaId = {statusMsgAreaId}
-                                      />
-
-                    </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
 
                 <Card>
-                    <Accordion.Toggle style={{color: 'blue', marginBottom: 50 }} as={Card.Header} eventKey="1">
-                        View your tasks
-                    </Accordion.Toggle>
-
-                    <Accordion.Collapse eventKey="1">
                     <Card.Body>
 
                         <h5 style={{color: 'green', fontSize: '16px', marginTop: 30, marginBottom: 30}} >Tasks Opened By You</h5>
@@ -222,6 +187,8 @@ export default class MyTasks extends Component {
                                             cardListType="details"
                                             handleUpdateTaskCallback = {this.handleUpdateTask}
                                             handleDeleteTaskCallback = {this.handleDeleteTask}
+                                            handleCreateTaskCallback = {this.handleCreateTask}
+                                            mytasksContainerId='mytasks-container'
                                             position="Worker"  />
 
 
@@ -230,14 +197,41 @@ export default class MyTasks extends Component {
                         <TasksCardList cardList={ workedTasks } 
                                             cardListType="details"
                                             handleUpdateTaskCallback = {this.handleUpdateTask}
+                                            handleCreateTaskCallback = {this.handleCreateTask}
+                                            mytasksContainerId='mytasks-container'
                                             position="Owner"  />
 
                     </Card.Body>
-                    </Accordion.Collapse>
                 </Card>
-            </Accordion>
         )
 
+    }
+
+    HandleOpenModal() {
+        this.setState({ openModal: true })
+    }
+    HandleCloseModal() {
+        this.setState({ openModal: false })
+    }
+    displayModalForm() {
+        const {openModal} = this.state;
+        return (
+            <Modal center onClose={this.HandleCloseModal.bind(this)} open={openModal} 
+            >
+                <h1 id='task-form-header' >&nbsp;&nbsp;</h1>
+                <h2 style={{marginTop: '100px', marginBottom: '30px'}}>Please fill in task info</h2>
+
+                <TaskForm getUserCallback = {this.props.location.getUserCallback}
+                                updateOpenTasksCallback = {this.props.location.updateOpenTasksCallback}
+                                getSelectedTaskIdCallback = {this.getSelectedTaskId}
+                                getSelectedTaskObjCallback = {this.getSelectedTaskObj}
+                                setSelectedTaskIdCallback = {this.setSelectedTaskId}
+                                updateLocalTasksCallback = {this.updateLocalTaskList}
+                                showZipRadiusCallback = {this.props.location.showZipRadiusCallback}
+                                statusMsgAreaId = {statusMsgAreaId}
+                />
+            </Modal>
+        )
     }
 
     render() {
@@ -262,7 +256,10 @@ export default class MyTasks extends Component {
         return (
             <div id={toContainerId}>
 
+                <h1>&nbsp;&nbsp;</h1>
                 <h5 id={statusMsgAreaId} style={{ color: 'red',  marginTop: 50, marginBottom: 50 }} ></h5>
+
+                {this.displayModalForm()}
 
                 {this.displayTaskSections(this.state.taskWorkerListForOwner, this.state.taskOwnerListForWorker)}
 

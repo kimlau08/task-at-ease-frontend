@@ -1,15 +1,11 @@
 import React from 'react';
 import '../App.css';
 
-import genericImg from '../assets/generic_person.png';
-import updateIcon from '../assets/update_icon.png';
-import deleteIcon from '../assets/delete_icon.png';
+import TaskTable from './TaskTable';
 
-import BootstrapTable from 'react-bootstrap-table-next';
-import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter'; 
+import 'react-responsive-modal/styles.css';
 
-const notApplicable = "N/A";
-const imgSvrDNS = process.env.REACT_APP_HEROKU_EXPRESS_SVR;
+
 const displaySampleTaskCard = (task) => {
     return (
         <div key={task.id}>
@@ -24,144 +20,8 @@ const displaySampleTaskCard = (task) => {
     )
 }
 
-const displayTaskTable = (props) => {
-
-    let disableUpdate = props.handleUpdateTaskCallback === undefined;
-    let disableDelete = props.handleDeleteTaskCallback === undefined;
-
-    const photoFormatter = (cell, row) => {
-
-        let userImg = (row.photo !== null) ? imgSvrDNS + row.photo : genericImg;
-        return (<img style={{width: '30px', borderRadius: '50%' }} src={userImg} />)
-    }
-
-    const nameFormatter = (cell, row) => {
-
-        let userName = (row.name !== null) ? row.name : "TBD";
-        return userName;
-    }
-
-    const subtasksFormatter = (cell, row) => {
-        let subtasks = "";
-        
-        subtasks = subtasks.concat( (row.skill1 !== notApplicable ? row.skill1 : "") );
-        subtasks = subtasks.concat( (row.skill2 !== notApplicable ? ", "+row.skill2 : "") );
-        subtasks = subtasks.concat( (row.skill3 !== notApplicable ? ", "+row.skill3 : "") );
-
-        return ( <p>{subtasks}</p>)
-    }
-
-    const updateFormatter = (cell, row) => {
-
-        const handleUpdateTask = (event) => {
-
-            props.handleUpdateTaskCallback(row);
-        }
-
-        if (disableUpdate) {  //disable button and opague img
-            return ( <button class="btn" onClick={handleUpdateTask} disabled>
-                    <img style={{opacity: 0.6, width: '30px'}} id={row.id} src={updateIcon} />
-                    </button>
-                )
-        } 
-
-        return (  <button class="btn" onClick={handleUpdateTask} >
-                <img style={{width: '30px'}} id={row.id} src={updateIcon} />
-                  </button> 
-            )
-
-    }
-    const deleteFormatter = (cell, row) => {
-
-        const handleDeleteTask = (event) => {
-
-            props.handleDeleteTaskCallback(row);
-        }
-
-
-        if (disableDelete) { //disable button and opague img
-            return ( 
-                <button class="btn" onClick={handleDeleteTask} disabled>
-                   <img style={{opacity: 0.6, width: '30px'}} id={row.id} src={deleteIcon} />
-                </button>
-                )
-        }
-
-        return ( 
-            <button class="btn" onClick={handleDeleteTask}>
-               <img style={{width: '30px'}} id={row.id} src={deleteIcon}/>
-            </button>
-            )
-    }
-
-    const selectStatusOptions = {
-        open: 'open',
-        accepted: 'accepted',
-        closed: 'closed'
-    }
-
-
-    let tasks = props.cardList;
-    let position = props.position;
-
-    const columns = [{
-            dataField: 'photo',
-            text: position,
-            formatter: photoFormatter   //render image
-        }, {
-            dataField: 'name',
-            text: 'Name',
-            sort: true,
-            filter: textFilter(),
-            formatter: nameFormatter
-        }, {
-            dataField: 'details',
-            text: 'Desc',
-            sort: true,
-            filter: textFilter()
-        }, {
-            dataField: 'skill1',
-            text: 'Subtasks',
-            sort: true,
-            filter: textFilter(),
-            formatter: subtasksFormatter  //consolidate skill fields
-        }, {
-            dataField: 'kind',
-            text: 'Type',
-            sort: true,
-            filter: textFilter()
-        }, {
-            dataField: 'status',
-            text: 'Status',
-            sort: true,
-            formatter: cell => selectStatusOptions[cell], 
-            filter: selectFilter({
-                options: selectStatusOptions
-            })
-        }, {
-            dataField: 'hours',
-            text: 'Hours',
-            sort: true,
-            filter: textFilter()
-        }, {
-            dataField: 'skill2',
-            text: 'Update',
-            formatter: updateFormatter //display the clickable icon
-        }, {
-            dataField: 'skill3',
-            text: 'Delete',
-            formatter: deleteFormatter //display the clickable icon
-     }];
-
-    return (
-        <BootstrapTable keyField='id' data={ tasks } columns={ columns } 
-            filter={ filterFactory() }  filterPosition="top" //filters in a different row
-        />            
-    )
-}
-
 export default function TasksCardList(props) {
-    
+        
     if (Object.keys(props).length === 0 && props.constructor === Object) {
         return <div></div>  //props is empty
     }
@@ -179,7 +39,7 @@ export default function TasksCardList(props) {
                 { tasks.map( task => displaySampleTaskCard(task) ) }
             </div> }
 
-            { !samples && displayTaskTable(props) }
+            { !samples && <TaskTable {...props} /> }
 
         </div>
     )

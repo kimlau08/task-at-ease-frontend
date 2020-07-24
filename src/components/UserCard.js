@@ -1,6 +1,8 @@
 import React from 'react';
 import '../App.css';
 
+import ScrollIntoView from 'react-scroll-into-view'
+
 const imgSvrDNS = process.env.REACT_APP_HEROKU_EXPRESS_SVR;
 
 export default function UserCard(props) {
@@ -15,7 +17,7 @@ export default function UserCard(props) {
     let role = props.role;
 
     let clickHandlerFound = (props.clickCallback !== undefined);
-    let compactMode = (props.compact === "true");
+    let compactMode = props.compact;
     let HandleClick = props.clickCallback;
 
     return (
@@ -26,7 +28,11 @@ export default function UserCard(props) {
                     justifyContent: "space-evenly", width: "320px", height: "160px", fontSize: "12px" }
                 :  {justifyContent: "center", width: "200px", height: "350px", fontSize: "12px" }} >
                 { !clickHandlerFound && <img class="card-img-top" style={{width: "80px",height: "80px", margin: "50px auto", marginBottom: "20px" }} src={userImg} alt="a user" /> }
-                { clickHandlerFound && <img class="card-img-top ml-3 mt-4" style={{width: "80px",height: "80px", margin: "50px auto", marginBottom: "20px" }} src={userImg} alt="a user" onClick={HandleClick} name={userStr} id={userObj.id} /> }
+
+                { clickHandlerFound && <ScrollIntoView selector="#task-form-header"  >
+                    <img class="card-img-top ml-3 mt-4" style={{width: "80px",height: "80px", margin: "50px auto", marginBottom: "20px" }} src={userImg} alt="a user" onClick={HandleClick} name={userStr} id={userObj.id} /> 
+                    </ScrollIntoView>
+                 }
                 { !clickHandlerFound &&  <div class="card-body">
                     <h6 class="card-title">Name: {userObj.name}</h6>
                     <p class="card-text">Contact info: {userObj.email}</p>
