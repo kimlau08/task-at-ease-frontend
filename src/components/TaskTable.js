@@ -66,8 +66,11 @@ export default function TaskTable(props) {
                     { creating && <h3>Creating task</h3>}
 
                     <h3>&nbsp;&nbsp;</h3>
-                    { <button name={action} onClick={handleConfirm}>Confirm</button>}
-                    <button onClick={handleCloseModalMsg}>Cancel</button>
+                    <div style = {{width: '300px', display: 'flex', flexDirection: 'row', 
+                                justifyContent: 'space-evenly' }}>
+                        { <button style={{borderRadius: '5px'}} name={action} onClick={handleConfirm}>Confirm</button>}
+                        <button style={{borderRadius: '5px'}} onClick={handleCloseModalMsg}>Cancel</button>
+                    </div>
                 </Modal>
             )
         }
