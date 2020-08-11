@@ -37,11 +37,12 @@
 #### WorkerTaskCard.js - Display list of past tasks for each worker
 # 
 # API used: 
-### 1) Current location Geocodes lookup:
+### 1) Current location zip code lookup:
 ##### https://api.ipify.org
 ##### https://api.ipgeolocation.io/ipgeo
 ### 2) Zip codes within distance of current location
-##### https://api.promaptools.com/service/us/zips-inside-radius/get
+##### https://www.zipcodeapi.com/rest
+##### Prior free API has expired. New API from zipcodeapi.com has a limit 10 request/hr, 240 request/day.
 # 
 # Baseline Technologies
 ### Frontend: Reactjs, React Router, Axios/AJAX
