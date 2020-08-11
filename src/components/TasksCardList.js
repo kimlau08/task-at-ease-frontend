@@ -9,11 +9,11 @@ import 'react-responsive-modal/styles.css';
 const displaySampleTaskCard = (task) => {
     return (
         <div key={task.id}>
-            <div class="card p_3 ml-3 mb-3" style={{flex: 1, width: "200px", height: "250px" } } >
-                <img class="card-img-top" style={{height: "150px" }} src={task.img} alt={task.desc} />
-                <div class="card-body">
-                    <h6 class="card-title">{task.desc}</h6>
-                    <p class="card-text">Ave cost: {task.cost}</p>
+            <div className="card p_3 ml-3 mb-3" style={{flex: 1, width: "200px", height: "250px" } } >
+                <img className="card-img-top" style={{height: "150px" }} src={task.img} alt={task.desc} />
+                <div className="card-body">
+                    <h6 className="card-title">{task.desc}</h6>
+                    <p className="card-text">Ave cost: {task.cost}</p>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@ export default function TasksCardList(props) {
     return (
         <div className="card-list">
 
-            { samples && <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}} >
+            { samples && <div className="card-group w-100" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}} >
                 { tasks.map( task => displaySampleTaskCard(task) ) }
             </div> }
 

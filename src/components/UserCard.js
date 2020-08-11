@@ -22,32 +22,32 @@ export default function UserCard(props) {
 
     return (
         <div className="user-card">
-            <div class="card ml-3 mb-3 bg-info text-white" 
+            <div className="card ml-3 mb-3 bg-info text-white" 
                 style={ compactMode ? 
                     {display: 'flex', flexDirection: 'row', 
                     justifyContent: "space-evenly", width: "320px", height: "160px", fontSize: "12px" }
                 :  {justifyContent: "center", width: "200px", height: "350px", fontSize: "12px" }} >
-                { !clickHandlerFound && <img class="card-img-top" style={{width: "80px",height: "80px", margin: "50px auto", marginBottom: "20px" }} src={userImg} alt="a user" /> }
+                { !clickHandlerFound && <img className="card-img-top" style={{width: "80px",height: "80px", margin: "50px auto", marginBottom: "20px" }} src={userImg} alt="a user" /> }
 
                 { clickHandlerFound && <ScrollIntoView selector="#task-form-header"  >
-                    <img class="card-img-top ml-3 mt-4" style={{width: "80px",height: "80px", margin: "50px auto", marginBottom: "20px" }} src={userImg} alt="a user" onClick={HandleClick} name={userStr} id={userObj.id} /> 
+                    <img className="card-img-top ml-3 mt-4" style={{width: "80px",height: "80px", margin: "50px auto", marginBottom: "20px" }} src={userImg} alt="a user" onClick={HandleClick} name={userStr} id={userObj.id} /> 
                     </ScrollIntoView>
                  }
-                { !clickHandlerFound &&  <div class="card-body">
-                    <h6 class="card-title">Name: {userObj.name}</h6>
-                    <p class="card-text">Contact info: {userObj.email}</p>
-                    <p class="card-text">City: {userObj.city}</p>
-                    <p class="card-text">Zip: {userObj.st} {userObj.zip} </p>
+                { !clickHandlerFound &&  <div className="card-body">
+                    <h6 className="card-title">Name: {userObj.name}</h6>
+                    <p className="card-text">Contact info: {userObj.email}</p>
+                    <p className="card-text">City: {userObj.city}</p>
+                    <p className="card-text">Zip: {userObj.st} {userObj.zip} </p>
                 </div> }
-                { clickHandlerFound &&  <div class="card-body" onClick={HandleClick} name={userStr} id={userObj.id} >
-                    <h6 class="card-title">Name: {userObj.name}</h6>
-                    <p class="card-text">Contact info: {userObj.email}</p>
-                    <p class="card-text">City: {userObj.city}</p>
-                    <p class="card-text">Zip: {userObj.st} {userObj.zip} </p>
+                { clickHandlerFound &&  <div className="card-body" onClick={HandleClick} name={userStr} id={userObj.id} >
+                    <h6 className="card-title">Name: {userObj.name}</h6>
+                    <p className="card-text">Contact info: {userObj.email}</p>
+                    <p className="card-text">City: {userObj.city}</p>
+                    <p className="card-text">Zip: {userObj.st} {userObj.zip} </p>
                 </div> }
                 
-                {!compactMode && role === "worker" && <div class="card-footer">
-                    <small class="text-warning">Available: {userObj.free}</small>
+                {!compactMode && role === "worker" && <div className="card-footer">
+                    <small className="text-warning">Available: {userObj.free}</small>
                 </div>}
             </div>
         </div>

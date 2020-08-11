@@ -109,7 +109,7 @@ export default function TaskTable(props) {
         }
 
         if (disableUpdate) {  //disable button and opague img
-            return ( <button class="btn" onClick={handleUpdateTask} disabled>
+            return ( <button className="btn" onClick={handleUpdateTask} disabled>
                     <img style={{opacity: 0.6, width: '30px'}} id={row.id} src={updateIcon} />
                     </button>
                 )
@@ -117,7 +117,7 @@ export default function TaskTable(props) {
 
         return (
             <ScrollIntoView selector={"#"+props.mytasksContainerId}  >
-                <button class="btn" onClick={handleUpdateTask} >
+                <button className="btn" onClick={handleUpdateTask} >
                   <img style={{width: '30px'}} id={row.id} src={updateIcon} />
               </button> 
             </ScrollIntoView>
@@ -134,7 +134,7 @@ export default function TaskTable(props) {
 
         if (disableDelete) { //disable button and opague img
             return ( 
-                    <button class="btn" onClick={handleDeleteTask} disabled>
+                    <button className="btn" onClick={handleDeleteTask} disabled>
                     <img style={{opacity: 0.6, width: '30px'}} id={row.id} src={deleteIcon} />
                     </button>
                 )
@@ -142,7 +142,7 @@ export default function TaskTable(props) {
 
         return ( 
             <ScrollIntoView selector={"#"+props.mytasksContainerId}  >
-                <button class="btn" onClick={handleDeleteTask}>
+                <button className="btn" onClick={handleDeleteTask}>
                 <img style={{width: '30px'}} id={row.id} src={deleteIcon}/>
                 </button>
             </ScrollIntoView>
@@ -157,7 +157,7 @@ export default function TaskTable(props) {
 
         return (
             <ScrollIntoView selector={"#"+props.mytasksContainerId}  >
-                <button class="btn" onClick={handleCreateTask} >
+                <button className="btn" onClick={handleCreateTask} >
                   <img style={{width: '30px'}} id={row.id} src={createIcon} />
               </button> 
             </ScrollIntoView>
@@ -215,15 +215,15 @@ export default function TaskTable(props) {
             sort: true,
             filter: textFilter()
         }, {
-            dataField: 'skill2',
+            dataField: 'city',          //borrow field name for icon column
             text: 'Update',
             formatter: updateFormatter //display the clickable icon
         }, {
-            dataField: 'skill3',
+            dataField: 'st',            //borrow field name for icon column
             text: 'Delete',
             formatter: deleteFormatter //display the clickable icon
         }, {
-            dataField: 'skill3',
+            dataField: 'zip',           //borrow field name for icon column
             text: 'Create',
             formatter: createFormatter //display the clickable icon
      }];

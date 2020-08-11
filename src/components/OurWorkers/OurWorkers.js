@@ -88,15 +88,15 @@ export default class OurWorkers extends Component {
         photoTaskUserList = this.padArrayWithEmptyObj(photoTaskUserList, workerTaskListMax);
         
         return (
-            <div key={userDetailObj.name}>
-                <div class="card-group w-100 d-flex justify-content-center" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}} >
+            <div>
+                <div className="card-group w-100 d-flex justify-content-center" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}} >
 
-                    <UserCard key={userDetailObj.id} user={userDetailObj} role="worker" ></UserCard>
+                    <UserCard key={userDetailObj.name} user={userDetailObj} role="worker" ></UserCard>
 
                     {/* display the list of task photos for this worker user */}
                     { tasksByUserObj.photoTaskUserList.map( (taskDetailObj) => {
                             return (
-                                <WorkerTaskCard taskDetailStr={JSON.stringify(taskDetailObj)} />
+                                <WorkerTaskCard key={taskDetailObj.id} taskDetailStr={JSON.stringify(taskDetailObj)} />
                             )
                                 
                         }  ) }
@@ -128,7 +128,7 @@ export default class OurWorkers extends Component {
         return (  
             <div id={toContainerId}>
 
-                <p class="text-warning mb-0" style={{ height: 80, marginTop: 30, fontSize: 30, fontWeight: 'bold' }}>Our Workers and their Tasks</p>
+                <p className="text-warning mb-0" style={{ height: 80, marginTop: 30, fontSize: 30, fontWeight: 'bold' }}>Our Workers and their Tasks</p>
 
                 {this.state.photoTaskByUser.map( tasksByUserObj => this.displayTasksByWorker(tasksByUserObj) )}
             </div>

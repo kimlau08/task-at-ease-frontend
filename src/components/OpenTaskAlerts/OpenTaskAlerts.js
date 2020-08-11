@@ -10,15 +10,15 @@ const displayOpenTaskCard = (task) => {
 
     return (
         <div key={task.id}>
-            <div class="card ml-3 mt-3 border border-warning" style={{width: "180px", height: "350px"}} >
-                <div class="card-body">
-                    <h6 class="card-title">{task.details}</h6>
-                    <p class="card-text">Owner: {task.ownername}</p>
-                    <p class="card-text">Hours: {task.hours}</p>
-                    <p class="card-text">Skills: {skillRequired}</p>
+            <div className="card ml-3 mt-3 border border-warning" style={{width: "180px", height: "350px"}} >
+                <div className="card-body">
+                    <h6 className="card-title">{task.details}</h6>
+                    <p className="card-text">Owner: {task.ownername}</p>
+                    <p className="card-text">Hours: {task.hours}</p>
+                    <p className="card-text">Skills: {skillRequired}</p>
                 </div>
-                <div class="card-footer">
-                    <small class="text-muted">Contact info: {task.owneremail}</small>
+                <div className="card-footer">
+                    <small className="text-muted">Contact info: {task.owneremail}</small>
                 </div>
             </div>
         </div>
@@ -41,9 +41,9 @@ export default function OpenTaskAlerts(props) {
     return (  
         <div id={toContainerId}>
 
-            <p class="text-warning mb-0" style={{ fontWeight: 'bold' }}>Open task Alerts</p>
+            <p className="text-warning mb-0" style={{ fontWeight: 'bold' }}>Open task Alerts</p>
 
-            { (openTasks.length > 0) && <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }} >
+            { (openTasks.length > 0) && <div className="card-group w-100" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }} >
                 { openTasks.map( task => displayOpenTaskCard(task) ) }
             </div>}
         </div>

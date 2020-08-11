@@ -55,6 +55,7 @@ export default class App extends Component {
     
     this.getMyIPAndZipcodesNearBy = this.getMyIPAndZipcodesNearBy.bind(this);
     this.getMyGeocode = this.getMyGeocode.bind(this);
+    this.getMyZipCode = this.getMyZipCode.bind(this);
     this.updateOpenTasks = this.updateOpenTasks.bind(this);
     this.getZipcodesIn10Miles = this.getZipcodesIn10Miles.bind(this);
     this.getZipcodesIn20Miles = this.getZipcodesIn20Miles.bind(this);
@@ -102,19 +103,17 @@ export default class App extends Component {
     document.getElementById(msgAreaId).innerHTML = msg;
   }
   
-  async getZipcodesIn10Miles(geoCodes) {
+  async getZipcodesIn10Miles(zipCode) {
 
     let dst = 10;  //10 mile radius
-    let lat = geoCodes.latitude;
-    let lng = geoCodes.longitude;
 
-    let APIkey = process.env.REACT_APP_PROMAPTOOLS_1_MONTH_KEY;
+    let APIkey = process.env.REACT_APP_ZIPCODEAPI_API_KEY;
 
     try {
-      const response=await axios.get(`https://api.promaptools.com/service/us/zips-inside-radius/get/?radius=${dst}&lat=${lat}&lng=${lng}&key=${APIkey}`);
+      const response=await axios.get(`https://www.zipcodeapi.com/rest/${APIkey}/radius.json/${zipCode}/${dst}/mile`);
       console.log("getZipcodesIn10Miles response:", response.data);
 
-      let zipCodes = response.data.output.map( z => z.zip );
+      let zipCodes = response.data.zip_codes.map( z => z.zip_code );
 
       this.setState( { ZipcodesIn10Miles : zipCodes } );
 
@@ -124,19 +123,17 @@ export default class App extends Component {
   }
   
 
-  async getZipcodesIn20Miles(geoCodes) {
+  async getZipcodesIn20Miles(zipCode) {
 
     let dst = 20;  //20 mile radius
-    let lat = geoCodes.latitude;
-    let lng = geoCodes.longitude;
 
-    let APIkey = process.env.REACT_APP_PROMAPTOOLS_1_MONTH_KEY;
+    let APIkey = process.env.REACT_APP_ZIPCODEAPI_API_KEY;
 
     try {
-      const response=await axios.get(`https://api.promaptools.com/service/us/zips-inside-radius/get/?radius=${dst}&lat=${lat}&lng=${lng}&key=${APIkey}`);
+      const response=await axios.get(`https://www.zipcodeapi.com/rest/${APIkey}/radius.json/${zipCode}/${dst}/mile`);
       console.log("getZipcodesIn20Miles response:", response.data);
 
-      let zipCodes = response.data.output.map( z => z.zip );
+      let zipCodes = response.data.zip_codes.map( z => z.zip_code );
 
       this.setState( { ZipcodesIn20Miles : zipCodes } );
 
@@ -146,19 +143,17 @@ export default class App extends Component {
   }
 
 
-  async getZipcodesIn50Miles(geoCodes) {
+  async getZipcodesIn50Miles(zipCode) {
 
     let dst = 50;  //50 mile radius
-    let lat = geoCodes.latitude;
-    let lng = geoCodes.longitude;
 
-    let APIkey = process.env.REACT_APP_PROMAPTOOLS_1_MONTH_KEY;
+    let APIkey = process.env.REACT_APP_ZIPCODEAPI_API_KEY;
 
     try {
-      const response=await axios.get(`https://api.promaptools.com/service/us/zips-inside-radius/get/?radius=${dst}&lat=${lat}&lng=${lng}&key=${APIkey}`);
+      const response=await axios.get(`https://www.zipcodeapi.com/rest/${APIkey}/radius.json/${zipCode}/${dst}/mile`);
       console.log("getZipcodesIn50Miles response:", response.data);
 
-      let zipCodes = response.data.output.map( z => z.zip );
+      let zipCodes = response.data.zip_codes.map( z => z.zip_code );
 
       this.setState( { ZipcodesIn50Miles : zipCodes } );
 
@@ -189,6 +184,28 @@ export default class App extends Component {
     }
   }
   
+  async getMyZipCode(ip) {
+
+    let APIkey = process.env.REACT_APP_IPCODELOCATION_KEY;
+
+    try {
+      const response=await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=${APIkey}&ip=${ip}`);
+      console.log("getMyZipCode response:", response.data);
+
+      let zipCode = response.data.zipcode;
+
+      this.setState( {myZipCode : zipCode } );
+
+      this.getZipcodesIn10Miles(zipCode);
+      this.getZipcodesIn20Miles(zipCode);
+      this.getZipcodesIn50Miles(zipCode);
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  
+  
   async getMyIPAndZipcodesNearBy() {
     
     try {
@@ -197,7 +214,8 @@ export default class App extends Component {
 
       this.setState( {myIP : response.data.ip} );
 
-      this.getMyGeocode(response.data.ip);
+// this.getMyGeocode(response.data.ip);
+      this.getMyZipCode(response.data.ip);
 
     } catch (e) {
       console.error(e);
@@ -374,14 +392,14 @@ export default class App extends Component {
             <Container>
               <Row>
                 <Col md={3}>
-                  <div class="text-dark" >
+                  <div className="text-dark" >
 
                     <OpenTaskAlerts openTasks={this.state.openTasks} />
 
                   </div>
                 </Col>
                 <Col md={9}>
-                  <div class="p-3 mb-2 text-dark">
+                  <div className="p-3 mb-2 text-dark">
 
                     <TasksCardList cardList={SampleTasks} cardListType="samples" />
 

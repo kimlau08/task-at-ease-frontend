@@ -401,7 +401,7 @@ this.getWorkerSkills();
         return (
             <div>
                 <h3 style={{marginTop: 80 }}>Available Workers</h3>
-                <div class="card-group w-100" style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap'}} >
+                <div className="card-group w-100" style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap'}} >
 
                     { this.state.matchedWorkers.map( u => this.displayUserCard(u) ) }
                 </div> 
