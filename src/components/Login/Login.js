@@ -7,7 +7,7 @@ import { Form, Button } from 'react-bootstrap';
 import './Login.css';
 
 const authResultMsgId = "auth-result-msg-id";
-const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
+const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB && 'http://localhost:8888';
 let authResult = "";
 export default class Login extends Component {
     constructor(props) {
@@ -140,17 +140,17 @@ export default class Login extends Component {
 
         } else {
             return (<div>
-                
-                 <Redirect to='/Home' />    //route back to root (App component) depending on state
+                {/*  route back to root (App component) depending on state */}
+                 <Redirect to='/Home' />   
 
                 </div>)
         }
    
         return (  
             <div id={toContainerId}>
-                
+                {/* route back to root (App component) depending on state */}
                 {this.state.redirectToHome &&
-                    <Redirect to='/Home' />    //route back to root (App component) depending on state
+                    <Redirect to='/Home' />    
                 }
 
                 <br/><br/><br/><br/>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import { Form, FormControl, InputGroup, Button } from 'react-bootstrap';
-import { Col, Row } from "react-bootstrap";
+import { Form, InputGroup, Button } from 'react-bootstrap';
+import { Col } from "react-bootstrap";
 import Container from 'react-bootstrap/Container'; 
 
 import UserCard from '../UserCard';
@@ -11,7 +11,7 @@ const defaultTaskId = -1;
 const defaultWorkerId = 0;
 const selectedWorkerNameAreaId = "selected-worker-name";
 const distanceInfoAreaId = "radius-distance-msg";
-const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
+const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB && 'http://localhost:8888';
 
 const taskTypeOptionList = ( itemList ) => {
 
@@ -216,7 +216,7 @@ export default class TaskForm extends Component  {
 
 
         let selectedTaskId = this.props.getSelectedTaskIdCallback();
-        this.state.selectedTaskId = selectedTaskId;
+        this.setState({selectedTaskId : selectedTaskId});
 
         if (selectedTaskId === defaultTaskId) {
 
@@ -437,13 +437,12 @@ this.getWorkerSkills();
             return <div></div>  //props is empty
         }
 
-        this.state.selectedTaskId = this.props.getSelectedTaskIdCallback();        let currentTaskObj = this.props.getSelectedTaskObjCallback();
-        let emptyCurrentTask = (Object.keys(currentTaskObj).length === 0 && currentTaskObj.constructor === Object);
-        let userObj = this.props.getUserCallback()
-        this.state.user = userObj;
+        this.setState({selectedTaskId : this.props.getSelectedTaskIdCallback()});
+        let userObj = this.props.getUserCallback();
+        this.setState({user : userObj});
 
         //initialize matches to available workers
-        this.state.matchedWorkers = this.state.availableUsers;
+        this.setState({matchedWorkers : this.state.availableUsers});
         
         let toContainerId = "mytasks-container";
     

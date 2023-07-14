@@ -82,7 +82,7 @@ export default function TaskTable(props) {
     const photoFormatter = (cell, row) => {
 
         let userImg = (row.photo !== null) ? imgSvrDNS + row.photo : genericImg;
-        return (<img style={{width: '30px', borderRadius: '50%' }} src={userImg} />)
+        return (<img alt="a user" style={{width: '30px', borderRadius: '50%' }} src={userImg} />)
     }
 
     const nameFormatter = (cell, row) => {
@@ -110,7 +110,7 @@ export default function TaskTable(props) {
 
         if (disableUpdate) {  //disable button and opague img
             return ( <button className="btn" onClick={handleUpdateTask} disabled>
-                    <img style={{opacity: 0.6, width: '30px'}} id={row.id} src={updateIcon} />
+                    <img alt="update button" style={{opacity: 0.6, width: '30px'}} id={row.id} src={updateIcon} />
                     </button>
                 )
         } 
@@ -118,7 +118,7 @@ export default function TaskTable(props) {
         return (
             <ScrollIntoView selector={"#"+props.mytasksContainerId}  >
                 <button className="btn" onClick={handleUpdateTask} >
-                  <img style={{width: '30px'}} id={row.id} src={updateIcon} />
+                  <img alt="update button" style={{width: '30px'}} id={row.id} src={updateIcon} />
               </button> 
             </ScrollIntoView>
             )
@@ -135,7 +135,7 @@ export default function TaskTable(props) {
         if (disableDelete) { //disable button and opague img
             return ( 
                     <button className="btn" onClick={handleDeleteTask} disabled>
-                    <img style={{opacity: 0.6, width: '30px'}} id={row.id} src={deleteIcon} />
+                    <img alt="delete button" style={{opacity: 0.6, width: '30px'}} id={row.id} src={deleteIcon} />
                     </button>
                 )
         }
@@ -143,7 +143,7 @@ export default function TaskTable(props) {
         return ( 
             <ScrollIntoView selector={"#"+props.mytasksContainerId}  >
                 <button className="btn" onClick={handleDeleteTask}>
-                <img style={{width: '30px'}} id={row.id} src={deleteIcon}/>
+                <img alt="delete button" style={{width: '30px'}} id={row.id} src={deleteIcon}/>
                 </button>
             </ScrollIntoView>
             )
@@ -158,7 +158,7 @@ export default function TaskTable(props) {
         return (
             <ScrollIntoView selector={"#"+props.mytasksContainerId}  >
                 <button className="btn" onClick={handleCreateTask} >
-                  <img style={{width: '30px'}} id={row.id} src={createIcon} />
+                  <img alt="create button" style={{width: '30px'}} id={row.id} src={createIcon} />
               </button> 
             </ScrollIntoView>
             )

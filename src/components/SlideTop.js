@@ -37,13 +37,13 @@ export default function SlideTop() {
             <StyleRoot style={{width: '25%', 
                                 position: 'absolute', right: '11%', top: '15%' }} >
                 <div style={stylesSlow.hinge}>
-                    <img id="hingedImg" src={peeledPaints} className="border border-white" style={{width: '100%',  
+                    <img alt="room requiring work" id="hingedImg" src={peeledPaints} className="border border-white" style={{width: '100%',  
                                                 position: 'absolute', right: 0, top: '15%', 
                                                 borderRadius: 10 }}  />
                 </div>
 
                 <div>
-                    <img id="paintsImg" src={paints} className="border border-white" style={{width: '100%',  
+                    <img alt="cans of paints" id="paintsImg" src={paints} className="border border-white" style={{width: '100%',  
                                                 position: 'absolute', right: 0, top: '15%', 
                                                 borderRadius: 10 }}  />
                 </div>
@@ -98,13 +98,13 @@ export default function SlideTop() {
     return (  //display already rendered in App.js
         <div id='slide-container' style={{display: 'relative'}} >
 
-            <img src={layingTiles} style={{width: '80%'}} />
+            <img alt="hands laying tiles" src={layingTiles} style={{width: '80%'}} />
             
-            <img src={delivery} className="border border-white" 
+            <img alt="handing goods to receiver" src={delivery} className="border border-white" 
                                     style={{width: '20%', 
                                         position: 'absolute', left: '11%', top: '18%',
                                         borderRadius: 10 }}  />
-            <img src={houseCleaning} className="border border-white" style={{width: '20%',  
+            <img alt="house cleaning" src={houseCleaning} className="border border-white" style={{width: '20%',  
                                         position: 'absolute', left: '35%', top: '13%', 
                                         borderRadius: 10 }}  />
 

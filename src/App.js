@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import {Route, Link, Switch, BrowserRouter as Router } from 'react-router-dom';
 
-import { Navbar,Nav,NavDropdown,Form,FormControl,Button } from 'react-bootstrap'
+import { Navbar,Nav,Form } from 'react-bootstrap'
 
 
 import axios from 'axios';
@@ -22,8 +22,11 @@ import SampleTasks from './components/SampleTasks';
 import { Col, Row } from "react-bootstrap"
 import Container from 'react-bootstrap/Container'; 
 
+import api from './axios';
+
 const userNameId = "user-name";
-const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
+
+const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB && 'http://localhost:8888';
 const openTaskAlertMax = 3;  //only list a max of 3 items
 const defaultLoginUserId = 3; //user 3, (i.e. U3 Newsome) is the default user for demo purpose
 
@@ -46,7 +49,6 @@ export default class App extends Component {
       ZipcodesIn50Miles: []
     }
 
-    
     this.getUser = this.getUser.bind(this);
     this.setUser = this.setUser.bind(this);
     this.getZipRadius = this.getZipRadius.bind(this);
@@ -75,7 +77,7 @@ export default class App extends Component {
     document.getElementById(userNameId).innerHTML = `Logged in as ${userObj.name}`;
   }
   setAvailableUsers(availableUsers) {
-    this.state.availableUsers = availableUsers;
+    this.setState({availableUsers : availableUsers});
   }
   updateOpenTasks() {
     this.getTaskByStatus('open');
@@ -278,7 +280,7 @@ export default class App extends Component {
 
   
   setContainerOnDisplay(container) {   //Do not cause render
-    this.state.containerOnDisplay = container;   
+    this.setState({containerOnDisplay : container});   
   }
   
   swapContainerOnDisplay(toContainerId, inputProps) {   

@@ -14,7 +14,7 @@ import {Card} from 'react-bootstrap';
 
 const statusMsgAreaId = "status-msg-area";
 const defaultTaskId = -1; 
-const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB;
+const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB && 'http://localhost:8888';
 
 export default class MyTasks extends Component {
     constructor(props) {
@@ -119,7 +119,7 @@ export default class MyTasks extends Component {
         let userObj = this.props.location.getUserCallback(); 
         let userId = userObj.id;
 
-        this.state.user = userObj;
+        this.setState({user : userObj});
 
         if (userId === undefined) {
             this.showStatusMsg("Please login first.")   
@@ -250,8 +250,8 @@ export default class MyTasks extends Component {
 
         } else {
             return (<div>
-                
-                 <Redirect to='/Home' />    //route back to root (App component) depending on state
+                {/* route back to root (App component) depending on state */}
+                 <Redirect to='/Home' />    
 
                 </div>)
         }
@@ -260,7 +260,7 @@ export default class MyTasks extends Component {
             <div id={toContainerId}>
 
                 <h1>&nbsp;&nbsp;</h1>
-                <h5 id={statusMsgAreaId} style={{ color: 'red',  marginTop: 50, marginBottom: 50 }} ></h5>
+                <h5 id={statusMsgAreaId} style={{ color: 'red',  marginTop: 50, marginBottom: 50 }} > </h5>
 
                 {this.displayModalForm()}
 
