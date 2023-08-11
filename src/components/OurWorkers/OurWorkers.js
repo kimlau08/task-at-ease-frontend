@@ -5,7 +5,7 @@ import axios from 'axios';
 import UserCard from '../UserCard';
 import WorkerTaskCard from '../WorkerTaskCard';
 
-const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB && 'http://localhost:8888';
+const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB || 'http://localhost:8888';
 const workerTaskListMax = 3;
 export default class OurWorkers extends Component {
     constructor(props) {

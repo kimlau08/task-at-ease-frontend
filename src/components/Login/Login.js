@@ -7,7 +7,7 @@ import { Form, Button } from 'react-bootstrap';
 import './Login.css';
 
 const authResultMsgId = "auth-result-msg-id";
-const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB && 'http://localhost:8888';
+const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB || 'http://localhost:8888';
 let authResult = "";
 export default class Login extends Component {
     constructor(props) {

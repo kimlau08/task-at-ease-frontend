@@ -26,7 +26,7 @@ import api from './axios';
 
 const userNameId = "user-name";
 
-const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB && 'http://localhost:8888';
+const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB || 'http://localhost:8888';
 const openTaskAlertMax = 3;  //only list a max of 3 items
 const defaultLoginUserId = 3; //user 3, (i.e. U3 Newsome) is the default user for demo purpose
 

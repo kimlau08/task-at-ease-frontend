@@ -11,7 +11,7 @@ const defaultTaskId = -1;
 const defaultWorkerId = 0;
 const selectedWorkerNameAreaId = "selected-worker-name";
 const distanceInfoAreaId = "radius-distance-msg";
-const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB && 'http://localhost:8888';
+const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB || 'http://localhost:8888';
 
 const taskTypeOptionList = ( itemList ) => {
 

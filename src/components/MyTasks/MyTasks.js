@@ -14,7 +14,7 @@ import {Card} from 'react-bootstrap';
 
 const statusMsgAreaId = "status-msg-area";
 const defaultTaskId = -1; 
-const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB && 'http://localhost:8888';
+const dbDNS = process.env.REACT_APP_HEROKU_POSTGRES_DB || 'http://localhost:8888';
 
 export default class MyTasks extends Component {
     constructor(props) {
